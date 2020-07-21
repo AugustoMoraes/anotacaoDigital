@@ -46,7 +46,8 @@ export default function Produtos(){
         let key = firebase.database().ref('produtos').push().key
         await firebase.database().ref('produtos').child(key).set({
             nome: nome,
-            valor: valor
+            valor: valor,
+            cont: "0"
         })
         setValor('')
         alert('Produto Cadastrado com Sucesso!')

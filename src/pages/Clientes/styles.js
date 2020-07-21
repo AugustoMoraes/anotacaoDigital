@@ -14,8 +14,9 @@ export default StyleSheet.create({
         backgroundColor: '#ddd'
     },
     viewModal:{
+        flex: 1,
         backgroundColor: '#2d5',
-        padding: 5
+        padding: 5,
     },
     viewInput:{
         marginVertical:5,
@@ -39,13 +40,24 @@ export default StyleSheet.create({
     viewCard:{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 5,
         paddingHorizontal: 10,
         backgroundColor: '#fff',
-        marginBottom: 5,
-        marginTop: 10,
+        paddingVertical: 10,
+        margin: 5,
+    },
+    viewBotaoCard:{
+        marginVertical: -10,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    txtBtnCard:{
+        fontSize: 17,
     },
     txt:{
         fontSize: 20
+    },
+    viewModalAv:{
+        height: '50%',
+        backgroundColor:'#2d5'
     }
 })

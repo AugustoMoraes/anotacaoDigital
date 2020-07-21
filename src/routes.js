@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack'
 import Clientes from './pages/Clientes'
 import Produtos from './pages/Produtos'
 import ListDividaCliente from './pages/ListDividaCliente'
+import AvCliente from './pages/AvCliente'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -25,6 +26,7 @@ export default function Routes() {
       }}>
         <Stack.Screen name="Clientes" component={Tabs}/>
         <Stack.Screen name="ListDividaCliente" component={ListDividaCliente}/>
+        <Stack.Screen name="AvCliente" component={AvCliente}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

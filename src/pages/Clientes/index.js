@@ -40,7 +40,7 @@ export default function Clientes(){
         await firebase.database().ref('clientes').child(key).set({
             nome: nome,
             contato: `5591${contato}`,
-            saldo: 0
+            saldo: 0,   
         })
         alert('Cliente Adicionado Com Sucesso!')
         zerarForm()
@@ -56,6 +56,10 @@ export default function Clientes(){
     function addProdutosCliente({item}){
         navigation.navigate('ListDividaCliente',{item})
     }
+    function AvCliente({item}){
+        navigation.navigate('AvCliente',{item})
+    }
+        
     return(
         <View style={styles.container}>
             <View style={styles.viewHeader}>
@@ -73,16 +77,20 @@ export default function Clientes(){
                             <Text>Nome: {item.nome}</Text>
                             <Text>Saldo: {item.saldo}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>addProdutosCliente({item})}> 
-                            <Text>Adicionar Produtos</Text>
-                        </TouchableOpacity>
+                        <View style={styles.viewBotaoCard}>
+                                <TouchableOpacity onPress={()=>addProdutosCliente({item})}> 
+                                    <Text style={styles.txtBtnCard}>Add Produtos</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>AvCliente({item})}> 
+                                    <Text style={styles.txtBtnCard}>AV</Text>
+                                </TouchableOpacity>
+                        </View>
                     </View>
                 )}
             />
             <Modal
                 animationType ='slide'
                 visible = {modalAddVisible}
-                transparent = {true}
             >
                 <View style={styles.viewModal}>
                     <View style={styles.viewInput}>
