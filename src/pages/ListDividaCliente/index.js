@@ -113,62 +113,67 @@ export default function ListDividaCliente({route}){
     }
 
     return(
-        <View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Text>Listar Produtos Comprados</Text>
-                <Text>{cliente.nome}</Text>
+        <View style={styles.container}>
+            
+            <Text style={styles.txtHeader}>Cliente: {cliente.nome}</Text>
+            <View style={styles.viewHeader}>
+                <Text style={styles.txtHeader}>Listar Produtos Comprados</Text>
                 <TouchableOpacity onPress={()=>setModalAddProdutosVisible(true)}>
-                    {<Ionicons name="add-circle-sharp" size={25}/>}
+                    {<Ionicons name="add-circle-sharp" size={35}/>}
                 </TouchableOpacity>
             </View>
+            
 
             <FlatList
                 key = {item => item.key}
                 data= {produtosCliente}
                 renderItem = { ({item}) => (
-                    <View style={styles.viewCardListProdutos}>
-                        <View>
-                            <Text>Nome: {item.nome}</Text>
-                            <Text>Quantidade: {item.qtd}</Text>
-                        </View>
+                    <View style={styles.viewCardListProdutosComprados}>
+                            <Text style={styles.txtDescProduto}>Nome: {item.nome}</Text>
+                            <Text style={styles.txtDescProduto}>Quantidade: {item.qtd}</Text>
                     </View>
                 )}
                 />
 
-            <View style={styles.ViewFooter}>
-                <Text>Total a Pagar: {cliente.saldo}</Text>      
+            <View style={styles.viewFooter}>
+                <Text style={styles.txtFooter}>Total a Pagar: {cliente.saldo}</Text>      
             </View>
             <Modal
                 animationType = 'fade'
                 visible = {modalAddProdutosVisible}
                 //transparent = {true}
             >
-                <View style={{flex: 1}}>
+                <View style={{flex: 1, backgroundColor: '#999',paddingTop: 10}}>
+                <View style={{justifyContent: 'center' , alignItems: 'center'}}>
+                    <Text style={{fontSize: 40}}>Lista de Produtos</Text>
+                </View>
                 <FlatList
                 key = {item => item.key}
                 data= {produtos}
                 renderItem = { ({item}) => (
                     <View style={styles.viewCardListProdutos}>
-                        <View>
-                            <Text>Nome: {item.nome}</Text>
-                            <Text>Valor: {item.valor}</Text>
-                            <TouchableOpacity onPress={()=>incrementarProduto(item)}>
-                                <Ionicons name= 'md-add-circle' size = {25}/>
-                            </TouchableOpacity>
-                            <Text>{item.cont}</Text>
-                            <TouchableOpacity onPress={()=>decrementarProduto(item)}>
-                                <AntDesign name= 'minuscircle' size = {20}/>
-                            </TouchableOpacity>
-                        </View>
+                            <View style={styles.viewDescProduto}>
+                                <Text style={styles.txtDescProduto}>Nome: {item.nome}</Text>
+                                <Text style={styles.txtDescProduto}>Valor: {item.valor}</Text>
+                            </View>
+                            <View style={styles.viewContProduto}>
+                                <TouchableOpacity onPress={()=>incrementarProduto(item)}>
+                                    <Ionicons name= 'md-add-circle' size = {25}/>
+                                </TouchableOpacity>
+                                <Text style={{fontSize: 17,marginVertical: 3}}>{item.cont}</Text>
+                                <TouchableOpacity onPress={()=>decrementarProduto(item)}>
+                                    <AntDesign name= 'minuscircle' size = {20}/>
+                                </TouchableOpacity>
+                            </View>
                     </View>
                 )}
                 />
                 <View style={{flexDirection:'row', justifyContent: 'space-around'}}>
-                            <TouchableOpacity onPress={()=>setModalAddProdutosVisible(false)}>
-                                <Text>Cancelar</Text>
+                            <TouchableOpacity style={styles.btnCancelar} onPress={()=>setModalAddProdutosVisible(false)}>
+                                {<Ionicons name="close-circle" size={60} color='#FF6347'/>}
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>addProdutosClientes()}>
-                                <Text>Adicionar Produtos</Text>
+                            <TouchableOpacity style={styles.btnConfirmar} onPress={()=>addProdutosClientes()}>
+                                {<Ionicons name="checkmark-circle" size={60} color='#32CD32'/>}
                             </TouchableOpacity>
                 </View>
 

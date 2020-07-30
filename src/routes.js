@@ -8,13 +8,28 @@ import Produtos from './pages/Produtos'
 import ListDividaCliente from './pages/ListDividaCliente'
 import AvCliente from './pages/AvCliente'
 
+import Ionicons from 'react-native-vector-icons/Ionicons'
+Ionicons.loadFont()
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 function Tabs(){
   return(
-    <Tab.Navigator>
-      <Tab.Screen name="Clientes" component={Clientes} />
-      <Tab.Screen name="Produtos" component={Produtos} />
+    <Tab.Navigator tabBarOptions={{
+      activeTintColor: '#fff',
+      inactiveTintColor: '#000',
+      activeBackgroundColor: '#999',
+      showLabel: false,
+    }}>
+      <Tab.Screen name="Clientes" component={Clientes} options={{
+          tabBarIcon:()=>(
+              <Ionicons name='people' size={50} color='#000' />
+          )
+      }}/>
+      <Tab.Screen name="Produtos" component={Produtos} options={{
+        tabBarIcon: ()=>(
+          <Ionicons name='cart' size={50} color='#000'/>
+        )
+      }}/>
     </Tab.Navigator>
   )
 }

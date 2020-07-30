@@ -5,6 +5,18 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: '#999'
     },
+    viewHeader:{
+        flexDirection: 'row',
+        padding: 5,
+        marginBottom: 10,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: '#fff'
+    },
+    txtHeader:{
+        fontSize: 25, 
+        color: '#000'
+    },
     viewCardListProdutos:{
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -12,23 +24,30 @@ export default StyleSheet.create({
         paddingHorizontal: 10,
         backgroundColor: '#fff',
         marginBottom: 10,
+        borderRadius: 7
     },
-    viewHeader:{
-        flexDirection: 'row',
-        marginBottom: 10,
-        justifyContent: 'space-around',
-        alignItems: 'center'
-    },
-    txtHeader:{
-        fontSize: 20, 
-        color: '#fff'
+    txtCard:{
+        fontSize: 18
     },
     modalView: {
         backgroundColor: "#8A2BE2",
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
         padding: 10,
-        height: '100%'
+        width: '100%',
+    },
+    viewModalEdit:{
+        flex: 1,
+        justifyContent: 'flex-end'
+    },
+    headerModalEdit:{
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    txtHeaderModalEdit:{
+        fontSize: 25,
+        color: '#fff'
     },
     inputPedido:{
         backgroundColor: '#FFF',

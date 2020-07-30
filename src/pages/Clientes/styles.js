@@ -6,12 +6,19 @@ export default StyleSheet.create({
         backgroundColor: '#999'
     },
     viewHeader:{
-        height: 30,
+        //height: 30,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginHorizontal: 5,
-        backgroundColor: '#ddd'
+        padding: 5,
+        backgroundColor: '#fff',
+        borderRadius: 4
+    },
+    txtHeader:{
+        fontSize: 27,
+    },
+    txtDescricao:{
+        fontSize: 17
     },
     viewModal:{
         flex: 1,
@@ -44,6 +51,7 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         paddingVertical: 10,
         margin: 5,
+        borderRadius: 7
     },
     viewBotaoCard:{
         marginVertical: -10,

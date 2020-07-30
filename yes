@@ -1,0 +1,15 @@
+[33m51b93ff[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33m51b93ff[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33m51b93ff[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{2}: commit: instalação da lib
+[33mda9c420[m[33m ([m[1;32mupdate-layoute[m[33m, [m[1;32minstall-masked-text[m[33m)[m HEAD@{3}: checkout: moving from install-masked-text to master
+[33mda9c420[m[33m ([m[1;32mupdate-layoute[m[33m, [m[1;32minstall-masked-text[m[33m)[m HEAD@{4}: checkout: moving from master to install-masked-text
+[33mda9c420[m[33m ([m[1;32mupdate-layoute[m[33m, [m[1;32minstall-masked-text[m[33m)[m HEAD@{5}: checkout: moving from install-masked-text to master
+[33m4fc8abf[m HEAD@{6}: commit: instalação da biblioteca
+[33mda9c420[m[33m ([m[1;32mupdate-layoute[m[33m, [m[1;32minstall-masked-text[m[33m)[m HEAD@{7}: checkout: moving from master to install-masked-text
+[33mda9c420[m[33m ([m[1;32mupdate-layoute[m[33m, [m[1;32minstall-masked-text[m[33m)[m HEAD@{8}: merge update-layoute: Fast-forward
+[33m9d957e9[m[33m ([m[1;31morigin/master[m[33m)[m HEAD@{9}: checkout: moving from update-layoute to master
+[33mda9c420[m[33m ([m[1;32mupdate-layoute[m[33m, [m[1;32minstall-masked-text[m[33m)[m HEAD@{10}: commit: Atualização no layoute e criação de algumas novas funcionalidades
+[33m8f52887[m HEAD@{11}: commit: mudança parcial do layoute
+[33m9d957e9[m[33m ([m[1;31morigin/master[m[33m)[m HEAD@{12}: checkout: moving from master to update-layoute
+[33m9d957e9[m[33m ([m[1;31morigin/master[m[33m)[m HEAD@{13}: commit: Criação de um crud para a lista de produtos, criação de clientes devedores, assim como a lista de produtos que eles compraram gerando o valor que eles devem pagar e foi criado também o pagamento dessa diivida (AV)
+[33m9254c5d[m HEAD@{14}: commit (initial): primeiro commit com a criação básica da aplicação

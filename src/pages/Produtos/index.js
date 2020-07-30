@@ -1,7 +1,7 @@
 import React, {useEffect,useState} from 'react'
 import firebase from '../../database/firebase'
 import styles from './styles'
-import {View, Text, FlatList, TouchableOpacity, Modal,TextInput,Keyboard} from 'react-native'
+import {View, Text, FlatList, TouchableOpacity, Modal,TextInput,Alert} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Entypo from 'react-native-vector-icons/Entypo'
 Ionicons.loadFont()
@@ -58,7 +58,7 @@ export default function Produtos(){
         zerarForm()
     }
     async function confirmarEdit(){
-        alert('Confirmar')
+        alert(`Confirmar`)
         /** 
         let key = firebase.database().ref('produtos').push().key
         await firebase.database().ref('produtos').child(key).set({
@@ -70,13 +70,32 @@ export default function Produtos(){
         setModalAddVisible(false)
         */
     }
-    function editProduto({item}){
+    function editProduto(){
         setModalEditVisible(true)
         //alert('editar Produto')
     }
     async function deleteProduto({item}){
-        await firebase.database().ref('produtos').child(item.key).remove()
-        alert('Produto Deletado Com Sucesso!')
+        Alert.alert(
+            "Alert Title",
+            "My Alert Msg",
+            [
+              {
+                text: "CANCELAR",
+              },
+              { 
+                text: "CONFIRMAR", onPress: async ()=>{
+                await firebase.database().ref('produtos').child(item.key).remove()
+                alert('Produto Deletado Com Sucesso!')
+              }
+              //()=> alert('Bem Vindo')
+              }
+            ],
+            //{ cancelable: false }
+          );
+      
+        /** 
+        
+        */
     }
     
 
@@ -84,7 +103,7 @@ export default function Produtos(){
         <View style={styles.container}>
             
             <View style={styles.viewHeader}>
-                <Text style={styles.txtHeader}>Nome da Empresa</Text>
+                <Text style={styles.txtHeader}>Cadastro de Produtos</Text>
                 <TouchableOpacity onPress={()=>addProduto()}>
                     {<Ionicons name="add-circle-sharp" size={30}/>}
                 </TouchableOpacity>
@@ -96,15 +115,15 @@ export default function Produtos(){
                 renderItem = { ({item}) => (
                     <View style={styles.viewCardListProdutos}>
                         <View>
-                            <Text>Nome: {item.nome}</Text>
-                            <Text>Valor: {item.valor}</Text>
+                            <Text style={styles.txtCard}>Nome: {item.nome}</Text>
+                            <Text style={styles.txtCard}>Valor: {item.valor}</Text>
                         </View>
                         <View>
                             <TouchableOpacity onPress={()=>editProduto({item})}>
-                                {<Entypo name="edit" size={20}/>}
+                                {<Entypo name="edit" size={25}/>}
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>deleteProduto({item})}>
-                                {<Ionicons name="close-circle" size={20}/>}
+                                {<Ionicons name="close-circle" size={25}/>}
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -115,8 +134,11 @@ export default function Produtos(){
             visible={modalAddVisible}
             transparent= {true}
         >
-          <View style={{flex: 1}}>
+          <View style={{flex: 1, justifyContent:'flex-end'}}>
           <View style={styles.modalView}>
+                <View style={styles.headerModalEdit}>
+                  <Text style={styles.txtHeaderModalEdit}>Cadastro de Produto</Text>
+                </View>
             <TextInput
               style={styles.inputPedido}
               returnKeyType = 'next'
@@ -158,8 +180,11 @@ export default function Produtos(){
             visible={modalEditVisible}
             transparent= {true}
         >
-          <View style={{flex: 1}}>
+          <View style={styles.viewModalEdit}>
           <View style={styles.modalView}>
+              <View style={styles.headerModalEdit}>
+                  <Text style={styles.txtHeaderModalEdit}>Atualização do Produto</Text>
+              </View>
             <TextInput
               style={styles.inputPedido}
               returnKeyType = 'next'
@@ -185,7 +210,7 @@ export default function Produtos(){
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.btnConfirmar}
-              onPress={confirmarEdit}
+              onPress={()=>confirmarEdit({item})}
             >
               <Text style={styles.txtPedido}>Confirmar</Text>
             </TouchableOpacity>

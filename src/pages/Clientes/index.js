@@ -63,9 +63,9 @@ export default function Clientes(){
     return(
         <View style={styles.container}>
             <View style={styles.viewHeader}>
-                <Text>Clientes em Débito</Text>
+                <Text style={styles.txtHeader}>Clientes em Débito</Text>
                 <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
-                    {<Ionicons name="add-circle-sharp" size={25}/>}
+                    {<Ionicons name="add-circle-sharp" size={30}/>}
                 </TouchableOpacity>
             </View>
             <FlatList
@@ -74,12 +74,12 @@ export default function Clientes(){
                 renderItem = { ({item}) => (
                     <View style={styles.viewCard}>
                         <View>
-                            <Text>Nome: {item.nome}</Text>
-                            <Text>Saldo: {item.saldo}</Text>
+                            <Text style={styles.txtDescricao}>Nome: {item.nome}</Text>
+                            <Text style={styles.txtDescricao}>Saldo: {item.saldo}</Text>
                         </View>
                         <View style={styles.viewBotaoCard}>
                                 <TouchableOpacity onPress={()=>addProdutosCliente({item})}> 
-                                    <Text style={styles.txtBtnCard}>Add Produtos</Text>
+                                    <Text style={styles.txtBtnCard}>Produtos</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={()=>AvCliente({item})}> 
                                     <Text style={styles.txtBtnCard}>AV</Text>
