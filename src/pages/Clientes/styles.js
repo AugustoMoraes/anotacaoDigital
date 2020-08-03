@@ -67,5 +67,18 @@ export default StyleSheet.create({
     viewModalAv:{
         height: '50%',
         backgroundColor:'#2d5'
-    }
+    },
+    wrapperCustom: {
+        marginVertical: 5,
+        marginHorizontal: 7,
+        //padding: 5,
+        borderRadius: 7
+    },
+    logBox: {
+        //padding: 20,
+        margin: 10,
+        //borderWidth: StyleSheet.hairlineWidth,
+        borderColor: '#f0f0f0',
+        backgroundColor: '#f9f9f9'
+      }
 })

@@ -1,5 +1,5 @@
 import React, {useState,useEffect,} from 'react'
-import {View, Text,TouchableOpacity,Modal,TextInput,FlatList} from 'react-native'
+import {View, Text,TouchableOpacity,Modal,TextInput,FlatList, Pressable,Alert} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 import styles from './styles'
 import firebase from '../../database/firebase'
@@ -11,7 +11,9 @@ export default function Clientes(){
     const navigation = useNavigation()
     const [clientes, setClientes] = useState([])
     const [modalAddVisible, setModalAddVisible] = useState(false)
+    const [modalEditVisible, setModalEditVisible] = useState(false)
     const [nome, setNome] = useState('')
+    const [edit, setEdit] = useState([])
     const [contato, setContato] = useState('')
 
     useEffect(()=>{
@@ -59,7 +61,58 @@ export default function Clientes(){
     function AvCliente({item}){
         navigation.navigate('AvCliente',{item})
     }
+    function editOrDelete({item}){
+        Alert.alert(
+            "Selecione Ima Opção",
+            "Menasgem 2",
+            [
+                {
+                    text: 'CANCELAR'
+                },
+                {
+                    text: 'DELETAR', onPress: ()=> {deletar({item})}
+                },
+                {
+                    text: 'EDITAR', onPress: ()=> {editar({item})}
+                },
+            ]
+        )
+    }
+    async function deletar({item}){
+        if(item.saldo > 0){
+            alert('O usuário ainda está em débito! Impossível deleta-lo')
+            return
+        }
+        await [
+            // deletar usuário da lista de clientes
+            firebase.database().ref('clientes').child(item.key).remove(),
+            // deletar usuário da lista de Histórico de Clientes
+            firebase.database().ref('historicoAvCliente').child(item.key).remove(),
+            // deletar usuário da lista de Produtos Vendidos
+            firebase.database().ref('produtosVendidos').child(item.key).remove()
         
+        ]
+        
+        alert(`Usuário Deletado ${item.nome}`)
+    }
+    function editar({item}){
+        setEdit(item)
+        setModalEditVisible(true)
+        //alert(`Usuário Editado ${item.nome}`)
+    }
+    function cancelarEdicao(){
+        setModalEditVisible(false)
+        //alert('Ok')
+    }
+    async function confirmarEdicao(){
+        /** 
+        await firebase.database().ref('clientes').update({
+            nome: nome,
+            contato: contato
+        })
+        alert('Modificado com Sucesso!')
+        */
+    }
     return(
         <View style={styles.container}>
             <View style={styles.viewHeader}>
@@ -72,6 +125,17 @@ export default function Clientes(){
                 keyExtractor = {item => item.key}
                 data= {clientes}
                 renderItem = { ({item}) => (
+                    <Pressable
+                        onPressOut ={()=>editOrDelete({item})}
+                        style={({ pressed }) => [
+                            {
+                            backgroundColor: pressed
+                                ? '#777'
+                                : '#fff'
+                            },
+                            styles.wrapperCustom
+                        ]}
+                    >
                     <View style={styles.viewCard}>
                         <View>
                             <Text style={styles.txtDescricao}>Nome: {item.nome}</Text>
@@ -86,6 +150,7 @@ export default function Clientes(){
                                 </TouchableOpacity>
                         </View>
                     </View>
+                    </Pressable>
                 )}
             />
             <Modal
@@ -114,6 +179,38 @@ export default function Clientes(){
                             <Text>Cancelar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btn} onPress={confirmar}>
+                            <Text>Confirmar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType ='slide'
+                visible = {modalEditVisible}
+            >
+                <View style={styles.viewModal}>
+                    <View style={styles.viewInput}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder= 'Nome do Cliente'
+                        value = {nome}
+                        onChangeText = {(value)=>setNome(value)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder = 'Contato'
+                        keyboardType = 'numeric'
+                        value = {contato}
+                        onChangeText = {(value)=>setContato(value)}
+                    />
+                    </View>
+
+                    <View style={styles.viewBotao}>
+                        <TouchableOpacity style={styles.btn} onPress={cancelarEdicao()}>
+                            <Text>Cancelar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn} onPress={confirmarEdicao()}>
                             <Text>Confirmar</Text>
                         </TouchableOpacity>
                     </View>
