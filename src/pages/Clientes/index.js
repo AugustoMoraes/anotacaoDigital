@@ -63,7 +63,7 @@ export default function Clientes(){
     }
     function editOrDelete({item}){
         Alert.alert(
-            "Selecione Ima Opção",
+            "Selecione Uma Opção",
             "Menasgem 2",
             [
                 {
@@ -97,6 +97,9 @@ export default function Clientes(){
     }
     function editar({item}){
         setEdit(item)
+        setNome(item.nome)
+        setContato(item.contato)
+        setContato(contato.substring(4))
         setModalEditVisible(true)
         //alert(`Usuário Editado ${item.nome}`)
     }
@@ -105,13 +108,19 @@ export default function Clientes(){
         //alert('Ok')
     }
     async function confirmarEdicao(){
-        /** 
-        await firebase.database().ref('clientes').update({
+        //alert('OK')
+        if(edit.nome == '' || edit.contato == ''){
+            alert('Preencha os campos!')
+            return 
+        }
+        await firebase.database().ref('clientes').child(edit.key).update({
             nome: nome,
-            contato: contato
+            contato: `5591${contato}`
         })
+        setNome('')
+        setContato('')
+        setModalEditVisible(false)
         alert('Modificado com Sucesso!')
-        */
     }
     return(
         <View style={styles.container}>
@@ -205,17 +214,18 @@ export default function Clientes(){
                         onChangeText = {(value)=>setContato(value)}
                     />
                     </View>
-
                     <View style={styles.viewBotao}>
-                        <TouchableOpacity style={styles.btn} onPress={cancelarEdicao()}>
+                        <TouchableOpacity style={styles.btn} onPress={()=>cancelarEdicao()}>
                             <Text>Cancelar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={confirmarEdicao()}>
+
+                        <TouchableOpacity style={styles.btn} onPress={()=>confirmarEdicao()}>
                             <Text>Confirmar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
+            
         </View>
     )
 }

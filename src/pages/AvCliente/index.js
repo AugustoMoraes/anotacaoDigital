@@ -77,29 +77,29 @@ export default function AvCliente({route}){
             
             return 0
         }else{
+            console.log('entrou no primeiro if')
             let key = firebase.database().ref('historicoAvCliente').push().key
             await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
                 valor: numberValue,
                 data: new Date().toLocaleDateString(),
             })
-            alert('Av Cadastrado com Sucesso!')
             await firebase.database().ref('clientes').child(cliente.key).update({
-                    saldo: (cliente.saldo - numberValue )
-                })
-            if(cliente.saldo == valor){
+                saldo: (cliente.saldo - numberValue )
+            })
+            if(cliente.saldo == numberValue){
                 await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
                     valor: numberValue,
                     data:  new Date().toLocaleDateString(),
                     divida: 'Dívida Paga'
                 })  
-                await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
+                await firebase.database().ref('produtosVendidos').child(cliente.key).child(key).set({
                     valor: numberValue,
                     data:  new Date().toLocaleDateString(),
                     divida: 'Dívida Paga'
                 })  
             }
         }
-        
+            alert('Av Cadastrado com Sucesso!')
 
         zerarForm()
     }
@@ -137,8 +137,8 @@ export default function AvCliente({route}){
                             <Text style={styles.txtCard}>Data: {item.data}</Text>
                             <Text style={styles.txtCard}>Valor: {item.valor}</Text>
                             {
-                                !isNaN(item.divida) &&(
-                                    <Text style={styles.txtCard}>Dívida: {item.divida}</Text>
+                                (item.divida != null) &&(
+                                    <Text style={[styles.txtCard,{color: '#007111', fontWeight: 'bold'}]}>Dívida: {item.divida}</Text>
                                 )
                             }
                         </View>

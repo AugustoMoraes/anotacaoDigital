@@ -2,6 +2,7 @@ import React, {useEffect,useState} from 'react'
 import firebase from '../../database/firebase'
 import styles from './styles'
 import {View, Text, FlatList, TouchableOpacity, Modal,TextInput,Alert} from 'react-native'
+import {TextInputMask} from 'react-native-masked-text'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Entypo from 'react-native-vector-icons/Entypo'
 Ionicons.loadFont()
@@ -10,6 +11,8 @@ export default function Produtos(){
     const [produtos,setProdutos] = useState([])
     const [modalAddVisible, setModalAddVisible] = useState(false)
     const [modalEditVisible, setModalEditVisible] = useState(false)
+    const [edit, setEdit] = useState([])
+    const [moneyField, setMoneyField] = useState('')
     const [nome, setNome] = useState('')
     const [valor, setValor] = useState('')
     
@@ -58,19 +61,26 @@ export default function Produtos(){
         zerarForm()
     }
     async function confirmarEdit(){
-        alert(`Confirmar`)
-        /** 
-        let key = firebase.database().ref('produtos').push().key
-        await firebase.database().ref('produtos').child(key).set({
-            nome: nome,
-            valor: parseFloat(valor)
-        })
+      if(edit.nome == '' || edit.valor == 0){
+        alert('Preencha os campos!')
+        return
+      }
+      let numberValue = moneyField.getRawValue()
+      await firebase.database().ref('produtos').child(edit.key).set({
+          nome: nome,
+          valor: numberValue,
+          cont: '0'
+      })
         setValor('')
+        setNome('')
+        setModalEditVisible(false)
         alert('Produto Cadastrado com Sucesso!')
-        setModalAddVisible(false)
-        */
     }
-    function editProduto(){
+    function editProduto({item}){
+        console.log(typeof(item.valor))
+        setEdit(item)
+        setNome(item.nome),
+        setValor(item.valor.toString())
         setModalEditVisible(true)
         //alert('editar Produto')
     }
@@ -158,13 +168,13 @@ export default function Produtos(){
             <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
             <TouchableOpacity
               style={styles.btnCancelar}
-              onPress={cancelar}
+              onPress={()=>cancelar()}
             >
               <Text style={styles.txtPedido}>Cancelar</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.btnConfirmar}
-              onPress={confirmar}
+              onPress={()=>confirmar()}
             >
               <Text style={styles.txtPedido}>Confirmar</Text>
             </TouchableOpacity>
@@ -192,25 +202,25 @@ export default function Produtos(){
               value={nome}
               onChangeText={(value)=>{setNome(value)}}
             />
-            <TextInput
-                style={styles.inputPedido}
-                placeholder= "Valor R$00,00"
-                keyboardType= 'numeric'
-                value={valor}
-                onChangeText={(value)=>{setValor(value)}}
-            />
-            
+              <TextInputMask
+                  style={styles.inputPedido}
+                  value={valor}
+                  onChangeText={(value)=>{setValor(value)}}
+                  type={'money'}
+                  placeholder = 'R$00,00'
+                  ref={(ref) => setMoneyField(ref)}
+              />
             
             <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
             <TouchableOpacity
               style={styles.btnCancelar}
-              onPress={cancelarEdit}
+              onPress={()=>cancelarEdit()}
             >
               <Text style={styles.txtPedido}>Cancelar</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.btnConfirmar}
-              onPress={()=>confirmarEdit({item})}
+              onPress={()=>confirmarEdit()}
             >
               <Text style={styles.txtPedido}>Confirmar</Text>
             </TouchableOpacity>
