@@ -60,7 +60,7 @@ export default function AvCliente({route}){
         setModalEtidVisible(false)
     }
     function openModal(){
-        if(cliente.saldo == 0){
+        if(cliente.totalCompras == cliente.totalPago){
             alert('Dívida do Cliente está paga!\nImpossível Adicionar um AV')
             return
         }
@@ -72,9 +72,10 @@ export default function AvCliente({route}){
     }
     async function confirmar(){
         let numberValue = moneyField.getRawValue()
-        if(numberValue > cliente.saldo ){
-            alert('Saldo é Menor que o valor Pago pelo Cliente!')
-            
+        if((numberValue > (cliente.totalCompras - cliente.totalPago)) || (cliente.totalCompras - cliente.totalPago == 0) ){
+            alert('Inpossível adicionar o Av do Cliente, Verifique a dívida do Cliente!')
+            setModalAvVisible(false)
+            setValor('')
             return 0
         }else{
             console.log('entrou no primeiro if')
@@ -84,9 +85,9 @@ export default function AvCliente({route}){
                 data: new Date().toLocaleDateString(),
             })
             await firebase.database().ref('clientes').child(cliente.key).update({
-                saldo: (cliente.saldo - numberValue )
+                totalPago: (cliente.totalPago + numberValue )
             })
-            if(cliente.saldo == numberValue){
+            if(numberValue == (cliente.totalCompras - cliente.totalPago)){
                 await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
                     valor: numberValue,
                     data:  new Date().toLocaleDateString(),
@@ -99,8 +100,8 @@ export default function AvCliente({route}){
                 })  
             }
         }
-            alert('Av Cadastrado com Sucesso!')
-
+        alert('Av Cadastrado com Sucesso!')
+        setModalAvVisible(false)
         zerarForm()
     }
     function zerarForm(){
@@ -143,8 +144,12 @@ export default function AvCliente({route}){
                             }
                         </View>
                     </Pressable>
+
                 )}
-            />
+                />
+                <View style={styles.viewFooter}>
+                    <Text style={styles.txtFooter}>Débito de: {cliente.totalCompras - cliente.totalPago}</Text>
+                </View>
             {/** MODAL DE ATUALIZAÇÃO DAS INFORMAÇÕES */}
             <Modal
                 transparent = {true}
@@ -187,8 +192,20 @@ export default function AvCliente({route}){
             >
                 <View style={{flex: 1, justifyContent:'flex-end'}}>
                 <View style={styles.viewModal}>
+                    <View style={styles.viewTitulo}>
+                        <Text style={styles.txtTitulo}>Alteração do AV</Text>
+                    </View>  
+                    <View style={styles.viewInput}>   
+                    <Text style={styles.tipoInput}>Nome: </Text>
+                    <TextInput
+                        editable = {false}
+                        value = {edit.nome}
+                        placeholderTextColor= '#000'
+                        style={styles.input}
+                    /> 
+                    </View>
+
                     <View style={styles.viewInput}>
-                        
                     <TextInputMask
                         type={'datetime'}
                         options={{
@@ -197,9 +214,8 @@ export default function AvCliente({route}){
                         value={data}
                         placeholder = 'R$00,00'
                         onChangeText={(value) => setData(value)}
-                        />
-                        
-                        <Text>Data de Pagamento: {edit.data}</Text>
+                        style={styles.input}
+                    />
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems:'center'}}>
                     <TouchableOpacity onPress={()=>setModalEtidVisible(false)}>

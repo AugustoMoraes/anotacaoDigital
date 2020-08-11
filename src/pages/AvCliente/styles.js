@@ -24,16 +24,39 @@ export default StyleSheet.create({
         fontSize: 16,
         marginBottom: 5,
     },
+    viewFooter:{
+        marginHorizontal: 5,
+        backgroundColor: '#fff',
+        borderRadius: 7,
+        paddingHorizontal: 7
+    },
+    txtFooter:{
+        fontSize: 25,
+    },
     viewModal:{
-        //flex: 1,
-        backgroundColor: '#d4a'
+        backgroundColor: '#292929',
+        borderTopRightRadius: 7,
+        borderTopLeftRadius: 7
+    },
+    viewInput:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#000',
+        marginHorizontal: 5,
     },
     input:{
-        backgroundColor: '#fff',
-        color: '#000',
-        marginHorizontal: 5,
-        padding: 5,
-        borderRadius: 7
+        color: '#fff',
+        paddingHorizontal: 15,
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginBottom: 7,
+        borderRadius: 7,
+        paddingVertical: 0,
+        fontSize: 20
+    },
+    tipoInput:{
+        fontSize: 20,
+        color: '#fff',
     },
     //Teste Pressable
     wrapperCustom: {
@@ -42,12 +65,5 @@ export default StyleSheet.create({
         //padding: 5,
         borderRadius: 7
     },
-    logBox: {
-        //padding: 20,
-        margin: 10,
-        //borderWidth: StyleSheet.hairlineWidth,
-        borderColor: '#f0f0f0',
-        backgroundColor: '#f9f9f9'
-      }
     
 })

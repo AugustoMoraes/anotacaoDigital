@@ -20,11 +20,11 @@ export default StyleSheet.create({
         textAlign: 'center'
     },
     viewCardListProdutosComprados:{
-        marginHorizontal: 5,
-        paddingHorizontal: 10,
         backgroundColor: '#fff',
-        marginBottom: 10,
-        borderRadius: 7,
+        marginVertical: 5,
+        marginHorizontal: 7,
+        padding: 5,
+        borderRadius: 7
     },
     viewCardListProdutos:{
         flexDirection: 'row',
@@ -57,23 +57,59 @@ export default StyleSheet.create({
     txtFooter:{
         fontSize: 25,
     },
-    /**
-    btnCancelar:{
-        backgroundColor:'#FF6347',
-        padding: 5,
-        borderRadius: 7,
-        marginVertical: 5
-    },
-     
-    btnConfirmar:{
-        backgroundColor:'#32CD32',
-        padding: 5,
-        borderRadius: 7,
-        marginVertical: 5
-    },
-    */
     txtBtn:{
         fontSize: 17,
     },
-
+    viewModal:{
+        //flex: 1,
+        backgroundColor: '#292929',
+        borderTopRightRadius: 7,
+        borderTopLeftRadius: 7
+    },
+    viewInput:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#000',
+        marginHorizontal: 5,
+    },
+    viewTitulo:{
+        margin: 7,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    txtTitulo:{
+        color: '#fff',
+        fontSize: 25
+    },
+    input:{
+        color: '#fff',
+        paddingHorizontal: 15,
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginBottom: 7,
+        borderRadius: 7,
+        paddingVertical: 0,
+        fontSize: 20
+    },
+    tipoInput:{
+        fontSize: 20,
+        color: '#fff',
+    },
+    viewBtn:{
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        alignItems:'center',
+        marginVertical: 5,
+    },
+    btnModalEdit:{
+        fontSize: 18,
+        paddingHorizontal: 10,
+        color: '#fff'
+    },
+    wrapperCustom: {
+        marginVertical: 5,
+        marginHorizontal: 7,
+        //padding: 5,
+        borderRadius: 7
+    },
 })

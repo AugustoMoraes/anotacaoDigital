@@ -15,7 +15,7 @@ export default function Clientes(){
     const [nome, setNome] = useState('')
     const [edit, setEdit] = useState([])
     const [contato, setContato] = useState('')
-
+    const [isDividaPaga, setIsDividaPaga] = useState(false)
     useEffect(()=>{
         async function loadingClientes(){
             await firebase.database().ref('clientes').on('value' , (snapshot)=>{
@@ -25,13 +25,20 @@ export default function Clientes(){
                         key: childItem.key,
                         contato: childItem.val().contato,
                         nome: childItem.val().nome,
-                        saldo: childItem.val().saldo,      
+                        totalCompras: childItem.val().totalCompras,      
+                        totalPago: childItem.val().totalPago,      
                     }
                     setClientes(oldArray => [...oldArray, list])
                 })
             })
         }
         loadingClientes()
+        
+        if(clientes.totalCompras == clientes.totalPago){
+            setIsDividaPaga(true)
+        }else{
+            setIsDividaPaga(false)
+        }
     },[])
     function zerarForm(){
         setNome('')
@@ -42,7 +49,8 @@ export default function Clientes(){
         await firebase.database().ref('clientes').child(key).set({
             nome: nome,
             contato: `5591${contato}`,
-            saldo: 0,   
+            totalCompras: 0,   
+            totalPago: 0
         })
         alert('Cliente Adicionado Com Sucesso!')
         zerarForm()
@@ -92,24 +100,27 @@ export default function Clientes(){
             firebase.database().ref('produtosVendidos').child(item.key).remove()
         
         ]
-        
+        zerarForm()
         alert(`Usuário Deletado ${item.nome}`)
     }
     function editar({item}){
         setEdit(item)
         setNome(item.nome)
         setContato(item.contato)
-        setContato(contato.substring(4))
+        //setContato(contato.substring(4))
+        //console.log(`Contato: ${contato}`)
         setModalEditVisible(true)
         //alert(`Usuário Editado ${item.nome}`)
     }
     function cancelarEdicao(){
+        setEdit([])
+        zerarForm()
         setModalEditVisible(false)
         //alert('Ok')
     }
     async function confirmarEdicao(){
         //alert('OK')
-        if(edit.nome == '' || edit.contato == ''){
+        if(nome == '' || contato == ''){
             alert('Preencha os campos!')
             return 
         }
@@ -117,8 +128,8 @@ export default function Clientes(){
             nome: nome,
             contato: `5591${contato}`
         })
-        setNome('')
-        setContato('')
+        zerarForm()
+        setEdit([])
         setModalEditVisible(false)
         alert('Modificado com Sucesso!')
     }
@@ -148,7 +159,13 @@ export default function Clientes(){
                     <View style={styles.viewCard}>
                         <View>
                             <Text style={styles.txtDescricao}>Nome: {item.nome}</Text>
-                            <Text style={styles.txtDescricao}>Saldo: {item.saldo}</Text>
+                            <Text style={styles.txtDescricao}>Total de Compras: {item.totalCompras}</Text>
+                            <Text style={styles.txtDescricao}>Total Pago: {item.totalPago}</Text>
+                            {
+                                (isDividaPaga == true) &&(
+                                    <Text style={[styles.txtDescricao,{color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Valor Pago</Text>
+                                )
+                            }
                         </View>
                         <View style={styles.viewBotaoCard}>
                                 <TouchableOpacity onPress={()=>addProdutosCliente({item})}> 
@@ -210,7 +227,7 @@ export default function Clientes(){
                         style={styles.input}
                         placeholder = 'Contato'
                         keyboardType = 'numeric'
-                        value = {contato}
+                        value = {contato.substring(4)}
                         onChangeText = {(value)=>setContato(value)}
                     />
                     </View>

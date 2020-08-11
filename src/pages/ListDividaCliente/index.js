@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react'
-import {View,Text,FlatList,TouchableOpacity, Modal} from 'react-native'
+import {View,Text,FlatList,TouchableOpacity, Modal, Pressable, Alert, TextInput} from 'react-native'
+import {TextInputMask} from 'react-native-masked-text'
 import firebase from '../../database/firebase'
 import styles from './styles'
 
@@ -11,8 +12,12 @@ AntDesign.loadFont()
 export default function ListDividaCliente({route}){
     const cliente = route.params.item
     const [produtos, setProdutos] = useState([])
+    const [edit, setEdit] = useState([])
+    const [data, setData] = useState('')
+    const [validaData, setValidaData] = useState(false)
     const [produtosCliente, setProdutosCliente] = useState([])
     const [modalAddProdutosVisible, setModalAddProdutosVisible] = useState(false)
+    const [modalEditVisible, setModalEditVisible] = useState(false)
 
     async function loadingProdutos(){
         await firebase.database().ref('produtos').on('value' , (snapshot)=>{
@@ -22,7 +27,7 @@ export default function ListDividaCliente({route}){
                     key: childItem.key,
                     nome: childItem.val().nome,
                     valor: childItem.val().valor,
-                    cont: childItem.val().cont
+                    cont: childItem.val().cont,
                 }
                 setProdutos(oldArray => [...oldArray, list])
             })
@@ -37,6 +42,9 @@ export default function ListDividaCliente({route}){
                     key: childItem.key,
                     nome: childItem.val().nome,
                     qtd: childItem.val().qtd,
+                    data: childItem.val().data,
+                    divida: childItem.val().divida,
+                    
                 }
                 setProdutosCliente(oldArray => [...oldArray, list])
             })
@@ -49,7 +57,7 @@ export default function ListDividaCliente({route}){
     },[])
 
     function zerarQtdProdutos(){
-        produtos.map((produto)=>{
+        produtos.map(produto => {
             produto.cont = 0
         })
     }
@@ -63,25 +71,57 @@ export default function ListDividaCliente({route}){
 
         return qtdProdutos > 0 ? true : false
     }
+    function editOrDelete({item}){
+        Alert.alert(
+            "Mensagem",
+            "Descrição da Mensagem",
+            [
+                {
+                    text: 'CANCELAR',
+                },
+                {
+                    text: 'EDITAR', onPress: ()=>{editar({item})}
+                },
+            ]
+        )
+    }
+    function editar({item}){
+        setEdit(item)
+        setData(item.data)
+        setModalEditVisible(true)
+    }
+    async function confirmarModalEdit(){
+        if(!validaData.isValid()){
+            console.log('Data Incorreta!')
+            return
+        }
+        await firebase.database().ref('produtosVendidos').child(cliente.key).child(edit.key).update({
+            data: data
+        })
+        alert('Data Alterada com Sucesso!')
+        setData('')
+        setModalEditVisible(false)
+    }
     async function addProdutosClientes(){
         if(isValidaQtdProduto()){
             produtos.map(async (produto)=>{
                 if(produto.cont > 0){
-                    //saldo += (produto.cont * produto.valor)  
                     let key = firebase.database().ref('produtosVendidos').push().key
         
                     await firebase.database().ref('produtosVendidos').child(cliente.key).child(key).set({
                         nome: produto.nome,
                         qtd: produto.cont,
+                        data: new Date().toLocaleDateString()
                     })
 
                 }
             })
-            
             await firebase.database().ref('clientes').child(cliente.key).update({
-                saldo: parseInt(cliente.saldo) + parseFloat(getTotal())
+                totalCompras: parseInt(cliente.totalCompras) + parseFloat(getTotal()),
+                //totalPago: parseInt(cliente.totalPago) + parseFloat(getTotal()),
             })
             alert('Produtos Cadastrados com Sucesso!')
+            setModalAddProdutosVisible(false)
             zerarQtdProdutos()
         }else{
             alert('ERROR!!! \nVocê Precisa adicionar um produto!')
@@ -111,7 +151,7 @@ export default function ListDividaCliente({route}){
             return produto
           }))
     }
-
+   
     return(
         <View style={styles.container}>
             
@@ -128,15 +168,51 @@ export default function ListDividaCliente({route}){
                 key = {item => item.key}
                 data= {produtosCliente}
                 renderItem = { ({item}) => (
+                    <Pressable
+                        onPressOut ={()=>editOrDelete({item})}
+                        style={({ pressed }) => [
+                            {
+                              backgroundColor: pressed
+                                ? '#777'
+                                : '#fff'
+                            },
+                            styles.wrapperCustom
+                          ]}
+                    >
                     <View style={styles.viewCardListProdutosComprados}>
-                            <Text style={styles.txtDescProduto}>Nome: {item.nome}</Text>
-                            <Text style={styles.txtDescProduto}>Quantidade: {item.qtd}</Text>
+                        {
+                            (item.divida == null)&&(
+                                <Text style={styles.txtDescProduto}>Nome: {item.nome}</Text>
+                            )
+                        }
+                        {
+                            (item.divida == null)&&(
+                                <Text style={styles.txtDescProduto}>Quantidade: {item.qtd}</Text>
+                            )
+                        }
+                        {
+                            (item.divida == null)&&(
+                                <Text style={styles.txtDescProduto}>Data: {item.data}</Text>
+                            )
+                        }
+                        {
+                            (item.divida != null)&&(
+                                <Text style={[styles.txtDescProduto,{color: '#007111', fontWeight: 'bold'}]}>{item.divida}</Text>
+                            )
+                        }
+                        {
+                            (item.divida != null)&&(
+                                <Text style={styles.txtDescProduto}>Data: {item.data}</Text>
+                            )
+                        }
+                            
                     </View>
+                    </Pressable>
                 )}
                 />
 
             <View style={styles.viewFooter}>
-                <Text style={styles.txtFooter}>Total a Pagar: {cliente.saldo}</Text>      
+                <Text style={styles.txtFooter}>Total a Pagar: {cliente.totalCompras}</Text>      
             </View>
             <Modal
                 animationType = 'fade'
@@ -178,7 +254,53 @@ export default function ListDividaCliente({route}){
                 </View>
 
                 </View>
+            </Modal>
 
+            <Modal
+                transparent = {true}
+                animationType = 'slide'
+                visible = {modalEditVisible}
+            >
+                <View style={{flex: 1, justifyContent:'flex-end'}}>
+                
+                <View style={styles.viewModal}> 
+                <View style={styles.viewTitulo}>
+                    <Text style={styles.txtTitulo}>Alteração do Produto</Text>
+                </View>
+                    <View style={styles.viewInput}>   
+                    <Text style={styles.tipoInput}>Nome: </Text>
+                    <TextInput
+                        editable = {false}
+                        value = {edit.nome}
+                        placeholderTextColor= '#000'
+                        style={styles.input}
+                    /> 
+                    </View>
+
+                    <View style={styles.viewInput}>  
+                    <Text style={styles.tipoInput}>Valor: </Text>
+                    <TextInputMask
+                        type={'datetime'}
+                        options={{
+                            format: 'DD/MM/YYYY'
+                        }}
+                        value={data}
+                        placeholder = 'R$00,00'
+                        onChangeText={(value) => setData(value)}
+                        style={styles.input}
+                        ref={ (ref) => setValidaData(ref)}
+                        />
+                    </View>
+                    <View style={styles.viewBtn}>
+                    <TouchableOpacity onPress={()=>setModalEditVisible(false)} >
+                        <Text style={styles.btnModalEdit}>FECHAR</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>confirmarModalEdit()}>
+                        <Text style={styles.btnModalEdit}>CONFIRMAR</Text>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+                </View>
             </Modal>
         </View>
     )

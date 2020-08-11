@@ -59,7 +59,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     txtBtnCard:{
-        fontSize: 17,
+        fontSize: 22,
     },
     txt:{
         fontSize: 20
