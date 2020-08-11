@@ -7,7 +7,8 @@ export default StyleSheet.create({
     },  
     viewHeader:{
         flexDirection: 'row', 
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        alignItems: 'center'
     },
     txtHeader:{
        fontSize: 25,
@@ -33,6 +34,15 @@ export default StyleSheet.create({
     txtFooter:{
         fontSize: 25,
     },
+    viewTitulo:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 15
+    },
+    txtTitulo:{
+        color: '#FFF',
+        fontSize: 30
+    },
     viewModal:{
         backgroundColor: '#292929',
         borderTopRightRadius: 7,
@@ -40,8 +50,8 @@ export default StyleSheet.create({
     },
     viewInput:{
         flexDirection: 'row',
-        alignItems: 'center',
-        borderColor: '#000',
+        //alignItems: 'center',
+        borderColor: '#FFF',
         marginHorizontal: 5,
     },
     input:{
@@ -52,11 +62,22 @@ export default StyleSheet.create({
         marginBottom: 7,
         borderRadius: 7,
         paddingVertical: 0,
-        fontSize: 20
+        fontSize: 25
     },
-    tipoInput:{
-        fontSize: 20,
+    txtTipoInput:{
+        fontSize: 25,
         color: '#fff',
+        marginHorizontal: 15
+    },
+    viewBtn:{
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        alignItems:'center',
+        marginVertical: 7
+    },
+    btn:{
+        color: '#fff',
+        fontSize: 23
     },
     //Teste Pressable
     wrapperCustom: {
