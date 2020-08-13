@@ -15,6 +15,7 @@ export default function AvCliente({route}){
     const [valor, setValor] = useState('')
     const [data, setData] = useState('')
     const [moneyField, setMoneyField] = useState('')
+    const [validaData, setValidaData] = useState(false)
     useEffect(()=>{
         loadingAvCliente()
     },[])
@@ -59,6 +60,10 @@ export default function AvCliente({route}){
             setModalEtidVisible(false)
             return
        }
+       if(!validaData.isValid()){
+            alert('Data Incorreta!')
+            return
+        }
         await firebase.database().ref('historicoAvCliente').child(cliente.key).child(edit.key).update({
             data: data
         })
@@ -235,6 +240,7 @@ export default function AvCliente({route}){
                         placeholder = {edit.data}
                         placeholderTextColor = '#FFF'
                         onChangeText={(value) => setData(value)}
+                        ref={ (ref) => setValidaData(ref)}
                         style={styles.input}
                     />
                     </View>

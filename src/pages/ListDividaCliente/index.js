@@ -92,7 +92,7 @@ export default function ListDividaCliente({route}){
     }
     async function confirmarModalEdit(){
         if(!validaData.isValid()){
-            console.log('Data Incorreta!')
+            alert('Data Incorreta!')
             return
         }
         await firebase.database().ref('produtosVendidos').child(cliente.key).child(edit.key).update({

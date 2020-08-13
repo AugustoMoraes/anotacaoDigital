@@ -27,20 +27,26 @@ export default StyleSheet.create({
     },
     viewInput:{
         marginVertical:5,
+        marginHorizontal: 7,
         padding: 5,
     },
     input:{
         marginVertical:5,
-        fontSize: 20,
+        fontSize: 25,
+        borderWidth: 2,
+        borderColor: '#fff',
+        borderRadius: 7,
+        color: '#fff'
     },
     viewBotao:{
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        marginTop: 30
     },
     btn:{
         backgroundColor: '#fff',
-        fontSize: 20,
+        fontSize: 25,
         padding: 5,
         borderRadius: 7
     },
@@ -64,9 +70,19 @@ export default StyleSheet.create({
     txt:{
         fontSize: 20
     },
-    viewModalAv:{
-        height: '50%',
-        backgroundColor:'#2d5'
+    viewModal:{
+        flex: 1,
+        //height: '50%',
+        backgroundColor:'#292929'
+    },
+    viewTitulo:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 15
+    },
+    txtTitulo:{
+        color: '#FFF',
+        fontSize: 30
     },
     wrapperCustom: {
         marginVertical: 5,

@@ -86,8 +86,8 @@ export default function Produtos(){
     }
     async function deleteProduto({item}){
         Alert.alert(
-            "Alert Title",
-            "My Alert Msg",
+            "Alerta!",
+            "Você deseja deletar esse produto?",
             [
               {
                 text: "CANCELAR",
@@ -208,7 +208,7 @@ export default function Produtos(){
                   onChangeText={(value)=>{setValor(value)}}
                   type={'money'}
                   placeholder = 'R$00,00'
-                  ref={(ref) => setMoneyField(ref)}
+                  ref={(ref) => setMoneyField(ref)} 
               />
             
             <View style={{flexDirection: 'row', justifyContent:'space-around'}}>

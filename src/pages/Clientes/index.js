@@ -34,11 +34,6 @@ export default function Clientes(){
         }
         loadingClientes()
         
-        if(clientes.totalCompras == clientes.totalPago){
-            setIsDividaPaga(true)
-        }else{
-            setIsDividaPaga(false)
-        }
     },[])
     function zerarForm(){
         setNome('')
@@ -58,9 +53,14 @@ export default function Clientes(){
         //loadingClientes()
     }
     function cancelar(){
+        zerarForm()
         setModalAddVisible(false)
     }
     function confirmar(){
+        if(nome == '' || contato == ''){
+            alert('Preencha todos os campos')
+            return
+        }
         addCliente()
     }
     function addProdutosCliente({item}){
@@ -106,7 +106,7 @@ export default function Clientes(){
     function editar({item}){
         setEdit(item)
         setNome(item.nome)
-        setContato(item.contato)
+        setContato(item.contato.substring(4))
         //setContato(contato.substring(4))
         //console.log(`Contato: ${contato}`)
         setModalEditVisible(true)
@@ -162,8 +162,9 @@ export default function Clientes(){
                             <Text style={styles.txtDescricao}>Total de Compras: {item.totalCompras}</Text>
                             <Text style={styles.txtDescricao}>Total Pago: {item.totalPago}</Text>
                             {
-                                (isDividaPaga == true) &&(
-                                    <Text style={[styles.txtDescricao,{color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Valor Pago</Text>
+                                
+                                (item.totalCompras == item.totalPago) &&(
+                                    <Text style={[styles.txtDescricao,{color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Dívida Paga</Text>
                                 )
                             }
                         </View>
@@ -184,10 +185,14 @@ export default function Clientes(){
                 visible = {modalAddVisible}
             >
                 <View style={styles.viewModal}>
+                    <View style={styles.viewTitulo}>
+                        <Text style={styles.txtTitulo}>Adicionar Cliente</Text>
+                    </View>
                     <View style={styles.viewInput}>
                     <TextInput
                         style={styles.input}
                         placeholder= 'Nome do Cliente'
+                        placeholderTextColor = '#ddd'
                         value = {nome}
                         onChangeText = {(value)=>setNome(value)}
                     />
@@ -201,11 +206,11 @@ export default function Clientes(){
                     </View>
 
                     <View style={styles.viewBotao}>
-                        <TouchableOpacity style={styles.btn} onPress={cancelar}>
-                            <Text>Cancelar</Text>
+                        <TouchableOpacity onPress={cancelar}>
+                            <Text style={styles.btn}>Cancelar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn} onPress={confirmar}>
-                            <Text>Confirmar</Text>
+                        <TouchableOpacity onPress={confirmar}>
+                            <Text style={styles.btn}>Confirmar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -220,14 +225,18 @@ export default function Clientes(){
                     <TextInput
                         style={styles.input}
                         placeholder= 'Nome do Cliente'
+                        placeholderTextColor = '#fff'
                         value = {nome}
                         onChangeText = {(value)=>setNome(value)}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder = 'Contato'
+                        placeholderTextColor = '#fff'
                         keyboardType = 'numeric'
-                        value = {contato.substring(4)}
+                        value = {contato}
+                        //placeholder = {edit.contato}
+                        //placeholderTextColor = '#000'
                         onChangeText = {(value)=>setContato(value)}
                     />
                     </View>
