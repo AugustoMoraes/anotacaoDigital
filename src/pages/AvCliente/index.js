@@ -169,7 +169,7 @@ export default function AvCliente({route}){
                     >
                         <View style={styles.viewCard}>
                             <Text style={styles.txtCard}>Data: {item.data}</Text>
-                            <Text style={styles.txtCard}>Valor: {item.valor}</Text>
+                            <Text style={styles.txtCard}>Valor: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
                             {
                                 (item.divida != null) &&(
                                     <Text style={[styles.txtCard,{color: '#007111', fontWeight: 'bold'}]}>Dívida: {item.divida}</Text>

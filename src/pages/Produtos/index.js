@@ -126,7 +126,7 @@ export default function Produtos(){
                     <View style={styles.viewCardListProdutos}>
                         <View>
                             <Text style={styles.txtCard}>Nome: {item.nome}</Text>
-                            <Text style={styles.txtCard}>Valor: {item.valor}</Text>
+                            <Text style={styles.txtCard}>Valor: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
                         </View>
                         <View>
                             <TouchableOpacity onPress={()=>editProduto({item})}>

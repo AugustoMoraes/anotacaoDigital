@@ -159,8 +159,12 @@ export default function Clientes(){
                     <View style={styles.viewCard}>
                         <View>
                             <Text style={styles.txtDescricao}>Nome: {item.nome}</Text>
-                            <Text style={styles.txtDescricao}>Total de Compras: {item.totalCompras}</Text>
-                            <Text style={styles.txtDescricao}>Total Pago: {item.totalPago}</Text>
+                            <Text style={styles.txtDescricao}>
+                                Total de Compras: {Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'}).format(item.totalCompras)}
+                            </Text>
+                            <Text style={styles.txtDescricao}>
+                                Total Pago: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.totalPago)}
+                                </Text>
                             {
                                 
                                 (item.totalCompras == item.totalPago) &&(
