@@ -89,7 +89,7 @@ export default StyleSheet.create({
         marginBottom: 7,
         borderRadius: 7,
         paddingVertical: 0,
-        fontSize: 20
+        fontSize: 25
     },
     tipoInput:{
         fontSize: 20,
@@ -99,11 +99,11 @@ export default StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'space-around', 
         alignItems:'center',
-        marginVertical: 5,
+        marginVertical: 15,
     },
     btnModalEdit:{
-        fontSize: 18,
-        paddingHorizontal: 10,
+        fontSize: 23,
+        //paddingHorizontal: 10,
         color: '#fff'
     },
     wrapperCustom: {

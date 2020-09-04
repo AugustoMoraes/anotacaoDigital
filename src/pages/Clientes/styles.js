@@ -17,6 +17,15 @@ export default StyleSheet.create({
     txtHeader:{
         fontSize: 27,
     },
+    viewTotalReceber:{
+        backgroundColor: '#fff',
+        marginTop:5,
+        borderRadius: 4,
+        padding: 5
+    },
+    txtTotalReceber:{
+        fontSize: 25,
+    },
     txtDescricao:{
         fontSize: 17
     },

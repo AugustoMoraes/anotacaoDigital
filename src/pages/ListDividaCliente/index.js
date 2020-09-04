@@ -20,7 +20,7 @@ export default function ListDividaCliente({route}){
     const [modalEditVisible, setModalEditVisible] = useState(false)
 
     async function loadingProdutos(){
-        await firebase.database().ref('produtos').on('value' , (snapshot)=>{
+        await firebase.database().ref('produtos').orderByChild('nome').on('value' , (snapshot)=>{
             setProdutos([])
             snapshot.forEach( (childItem) =>{
                 let list = {
@@ -35,7 +35,7 @@ export default function ListDividaCliente({route}){
     }
     
     async function loadingProdutosCliente(){
-        await firebase.database().ref('produtosVendidos').child(cliente.key).on('value' , (snapshot)=>{
+        await firebase.database().ref('produtosVendidos').child(cliente.key).orderByChild('data').on('value' , (snapshot)=>{
             setProdutosCliente([])
             snapshot.forEach( (childItem) =>{
                 let list = {
@@ -90,9 +90,24 @@ export default function ListDividaCliente({route}){
         setData(item.data)
         setModalEditVisible(true)
     }
+    function comparDates (date) {
+        let parts = date.split('/') // separa a data pelo caracter '/'
+        let today = new Date()      // pega a data atual
+        
+        date = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
+        
+        // compara se a data informada é maior que a data atual
+        // e retorna true ou false
+        return date > today ? true : false
+    }
     async function confirmarModalEdit(){
         if(!validaData.isValid()){
             alert('Data Incorreta!')
+            return
+        }
+        if(comparDates(data)){
+            alert('Preencha com uma data menor que a de Hoje!')
+            setData('')
             return
         }
         await firebase.database().ref('produtosVendidos').child(cliente.key).child(edit.key).update({
@@ -210,10 +225,12 @@ export default function ListDividaCliente({route}){
                     </Pressable>
                 )}
                 />
-
+            {/** 
             <View style={styles.viewFooter}>
-                <Text style={styles.txtFooter}>Total a Pagar: {cliente.totalCompras}</Text>      
+                <Text style={styles.txtFooter}>Total a Pagar: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
+                    format(cliente.totalCompras-cliente.totalPago)}</Text>      
             </View>
+            */}
             <Modal
                 animationType = 'fade'
                 visible = {modalAddProdutosVisible}
@@ -234,11 +251,11 @@ export default function ListDividaCliente({route}){
                             </View>
                             <View style={styles.viewContProduto}>
                                 <TouchableOpacity onPress={()=>incrementarProduto(item)}>
-                                    <Ionicons name= 'md-add-circle' size = {25}/>
+                                    <Ionicons name= 'md-add-circle' size = {30}/>
                                 </TouchableOpacity>
-                                <Text style={{fontSize: 17,marginVertical: 3}}>{item.cont}</Text>
+                                <Text style={{fontSize: 19,marginVertical: 3}}>{item.cont}</Text>
                                 <TouchableOpacity onPress={()=>decrementarProduto(item)}>
-                                    <AntDesign name= 'minuscircle' size = {20}/>
+                                    <AntDesign name= 'minuscircle' size = {25}/>
                                 </TouchableOpacity>
                             </View>
                     </View>
@@ -285,7 +302,7 @@ export default function ListDividaCliente({route}){
                             format: 'DD/MM/YYYY'
                         }}
                         value={data}
-                        placeholder = 'R$00,00'
+                        placeholder = 'DD/MM/AAAA'
                         onChangeText={(value) => setData(value)}
                         style={styles.input}
                         ref={ (ref) => setValidaData(ref)}

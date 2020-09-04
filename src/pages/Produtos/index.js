@@ -18,7 +18,7 @@ export default function Produtos(){
     
     useEffect(()=>{
         async function loadingProdutos(){
-            await firebase.database().ref('produtos').on('value' , (snapshot)=>{
+            await firebase.database().ref('produtos').orderByChild('nome').on('value' , (snapshot)=>{
                 setProdutos([])
                 snapshot.forEach( (childItem) =>{
                     let list = {
@@ -130,10 +130,10 @@ export default function Produtos(){
                         </View>
                         <View>
                             <TouchableOpacity onPress={()=>editProduto({item})}>
-                                {<Entypo name="edit" size={25}/>}
+                                {<Entypo name="edit" size={28}/>}
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>deleteProduto({item})}>
-                                {<Ionicons name="close-circle" size={25}/>}
+                                {<Ionicons name="close-circle" size={28}/>}
                             </TouchableOpacity>
                         </View>
                     </View>

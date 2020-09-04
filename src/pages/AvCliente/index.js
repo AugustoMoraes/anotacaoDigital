@@ -9,6 +9,7 @@ Ionicons.loadFont()
 export default function AvCliente({route}){
     const cliente = route.params.item
     const [listAvCliente, setListAvCliente] = useState([])
+    const [listProdutosCliente, setListProdutosCliente] = useState([])
     const [modalAvVisible, setModalAvVisible] = useState(false)
     const [modalEditVisible, setModalEtidVisible] = useState(false)
     const [edit, setEdit] = useState([])
@@ -16,12 +17,14 @@ export default function AvCliente({route}){
     const [data, setData] = useState('')
     const [moneyField, setMoneyField] = useState('')
     const [validaData, setValidaData] = useState(false)
+    //const [dataUltimaCompra, setDataUltimaCompra] = useState('')
     useEffect(()=>{
         loadingAvCliente()
+        loadingListProdutosCliente()
     },[])
     async function loadingAvCliente(){
 
-        await firebase.database().ref('historicoAvCliente').child(cliente.key).on('value', (snapshot) =>{
+        await firebase.database().ref('historicoAvCliente').child(cliente.key).orderByChild('data').on('value', (snapshot) =>{
             setListAvCliente([])
             snapshot.forEach( (childItem) => {
                 let list = {
@@ -34,6 +37,36 @@ export default function AvCliente({route}){
             })
 
         })
+    }
+    async function loadingListProdutosCliente(){
+        await firebase.database().ref('produtosVendidos').child(cliente.key).orderByChild('data').on('value',(snapshot) => {
+                setListProdutosCliente([])
+                snapshot.forEach( (childItem) => {
+                    let list = {
+                        key: childItem.val().key,
+                        data: childItem.val().data,
+                        qtd: childItem.val().qtd,
+                        nome: childItem.val().nome
+                    }
+                    setListProdutosCliente(oldArray => [...oldArray,list])
+                })
+            })
+    }
+    function msgDataUltimaCompraCliente(){
+        //loadingListProdutosCliente()
+        //let tamanho = listProdutosCliente.length
+        let ultimoProduto = listProdutosCliente[listProdutosCliente.length - 1]
+
+        //console.log(`Ultimo Produto: ${ultimoProduto.nome} - Quantidade: ${ultimoProduto.qtd}`)
+        let list = listProdutosCliente.filter(dataCompra => dataCompra.data === ultimoProduto.data)
+
+        let msgUltimasCompras = ``
+        
+        list.map(produto =>{
+            msgUltimasCompras += `Produto: ${produto.nome}\nQuantidade: ${produto.qtd}\nData: ${produto.data}\n=========================\n`
+        })
+
+        return msgUltimasCompras
     }
     function editOrDelete({item}){
         Alert.alert(
@@ -53,6 +86,16 @@ export default function AvCliente({route}){
         setEdit(item)
         setModalEtidVisible(true)
     }
+    function comparDates (date) {
+        let parts = date.split('/') // separa a data pelo caracter '/'
+        let today = new Date()      // pega a data atual
+        
+        date = new Date(parts[2], parts[1] - 1, parts[0]) // formata 'date'
+        
+        // compara se a data informada é maior que a data atual
+        // e retorna true ou false
+        return date > today ? true : false
+      }
     async function confirmarModalEdit(){
        if(data == ''){
             alert('A Data não foi modificada!')
@@ -64,6 +107,13 @@ export default function AvCliente({route}){
             alert('Data Incorreta!')
             return
         }
+
+        if(comparDates(data)){
+            alert('Preencha com uma data menor que a de Hoje!')
+            setData('')
+            return
+        }
+        
         await firebase.database().ref('historicoAvCliente').child(cliente.key).child(edit.key).update({
             data: data
         })
@@ -93,7 +143,6 @@ export default function AvCliente({route}){
             setValor('')
             return 0
         }else{
-            console.log('entrou no primeiro if')
             let key = firebase.database().ref('historicoAvCliente').push().key
             await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
                 valor: numberValue,
@@ -123,15 +172,23 @@ export default function AvCliente({route}){
         setValor('')
     }
     function montarMensagem(){
-        let msg = `Total da Compra: ${cliente.totalCompras}\n`
+        let msgUltimaCompra = msgDataUltimaCompraCliente()
+        let msg = `Ultimas Compras:\n\n${msgUltimaCompra}\nTotal da Compra: ${Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
+        format(cliente.totalCompras)}\n\nHistórico De AV do Cliene\n\n`
+
         listAvCliente.map(msgCliente => {
             if(msgCliente.divida!=null){
-                msg += `data: ${msgCliente.data}\nvalor: ${msgCliente.valor}\n${msgCliente.divida}\n=========================\n`
+                msg += `data: ${msgCliente.data}\nvalor: ${Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
+                format(msgCliente.valor)}\n${Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
+                format(msgCliente.divida)}\n=========================\n`
             }else{
-                msg += `data: ${msgCliente.data}\nvalor: ${msgCliente.valor}\n=========================\n`
+                msg += `data: ${msgCliente.data}\nvalor: ${Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
+                format(msgCliente.valor)}\n=========================\n`
             }
         })
-        msg += `Total Pago:${cliente.totalPago}\nDébito: ${cliente.totalCompras - cliente.totalPago}`
+        msg += `Total Pago:${Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
+            format(cliente.totalPago)}\nDébito: ${Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
+            format(cliente.totalCompras - cliente.totalPago)}`
         return msg
     }
     function enviarMsg(){
@@ -181,7 +238,8 @@ export default function AvCliente({route}){
                 )}
                 />
                 <View style={styles.viewFooter}>
-                    <Text style={styles.txtFooter}>Débito de: {cliente.totalCompras - cliente.totalPago}</Text>
+                        <Text style={styles.txtFooter}>Débito de: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(cliente.totalCompras - cliente.totalPago)}
+                        </Text>
                 </View>
             {/** MODAL DE ATUALIZAÇÃO DAS INFORMAÇÕES */}
             <Modal

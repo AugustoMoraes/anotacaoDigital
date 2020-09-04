@@ -15,7 +15,6 @@ export default function Clientes(){
     const [nome, setNome] = useState('')
     const [edit, setEdit] = useState([])
     const [contato, setContato] = useState('')
-    const [isDividaPaga, setIsDividaPaga] = useState(false)
     useEffect(()=>{
         async function loadingClientes(){
             await firebase.database().ref('clientes').on('value' , (snapshot)=>{
@@ -72,7 +71,7 @@ export default function Clientes(){
     function editOrDelete({item}){
         Alert.alert(
             "Selecione Uma Opção",
-            "Menasgem 2",
+            "",
             [
                 {
                     text: 'CANCELAR'
@@ -87,7 +86,7 @@ export default function Clientes(){
         )
     }
     async function deletar({item}){
-        if(item.saldo > 0){
+        if(item.totalCompras > item.totalPago){
             alert('O usuário ainda está em débito! Impossível deleta-lo')
             return
         }
@@ -133,6 +132,13 @@ export default function Clientes(){
         setModalEditVisible(false)
         alert('Modificado com Sucesso!')
     }
+    function totalReceber(){
+        let total = 0
+        clientes.map( cliente => {
+           total +=  (cliente.totalCompras - cliente.totalPago)
+        },0)
+        return total
+    }
     return(
         <View style={styles.container}>
             <View style={styles.viewHeader}>
@@ -140,6 +146,11 @@ export default function Clientes(){
                 <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
                     {<Ionicons name="add-circle-sharp" size={30}/>}
                 </TouchableOpacity>
+            </View>
+            <View style={styles.viewTotalReceber}>
+                <Text style={styles.txtTotalReceber}>
+                    Total a Receber: {Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'}).format(totalReceber())}
+                </Text>
             </View>
             <FlatList
                 keyExtractor = {item => item.key}
@@ -203,6 +214,7 @@ export default function Clientes(){
                     <TextInput
                         style={styles.input}
                         placeholder = 'Contato'
+                        placeholderTextColor = '#ddd'
                         keyboardType = 'numeric'
                         value = {contato}
                         onChangeText = {(value)=>setContato(value)}
@@ -245,12 +257,12 @@ export default function Clientes(){
                     />
                     </View>
                     <View style={styles.viewBotao}>
-                        <TouchableOpacity style={styles.btn} onPress={()=>cancelarEdicao()}>
-                            <Text>Cancelar</Text>
+                        <TouchableOpacity onPress={()=>cancelarEdicao()}>
+                            <Text style={styles.btn}>Cancelar</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.btn} onPress={()=>confirmarEdicao()}>
-                            <Text>Confirmar</Text>
+                        <TouchableOpacity onPress={()=>confirmarEdicao()}>
+                            <Text style={styles.btn}>Confirmar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
