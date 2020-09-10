@@ -191,7 +191,8 @@ android {
 
         }
     }
-// retirando a chave }
+// retirando a chave
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
