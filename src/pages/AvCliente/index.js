@@ -21,7 +21,7 @@ export default function AvCliente({route}){
     useEffect(()=>{
         loadingAvCliente()
         loadingListProdutosCliente()
-
+        //ordernarListaDate()
         
     },[])
     async function loadingAvCliente(){
@@ -146,9 +146,11 @@ export default function AvCliente({route}){
             return 0
         }else{
             let key = firebase.database().ref('historicoAvCliente').push().key
+            let datAtual = new Date()
             await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
                 valor: numberValue,
                 data: new Date().toLocaleDateString(),
+                //data:  new Date(`${datAtual.getFullYear()}-${datAtual.getMonth()}-${datAtual.getDay()}`),
             })
             await firebase.database().ref('clientes').child(cliente.key).update({
                 totalPago: (cliente.totalPago + numberValue )
@@ -157,11 +159,13 @@ export default function AvCliente({route}){
                 await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
                     valor: numberValue,
                     data:  new Date().toLocaleDateString(),
+                    //data:  new Date(`${datAtual.getFullYear()}-${datAtual.getMonth()}-${datAtual.getDay()}`),
                     divida: 'Dívida Paga'
                 })  
                 await firebase.database().ref('produtosVendidos').child(cliente.key).child(key).set({
                     valor: numberValue,
                     data:  new Date().toLocaleDateString(),
+                    //data:  new Date(`${datAtual.getFullYear()}-${datAtual.getMonth()}-${datAtual.getDay()}`),
                     divida: 'Dívida Paga'
                 })  
             }
@@ -199,33 +203,19 @@ export default function AvCliente({route}){
     }
     
     function ordenar(a, b) {
-        return a.data < b.data;
+        return a.data > b.data;
     }
     function ordernarListaDate(){
-        let list = listAvCliente    
+        listAvCliente.map(lista => {
+            lista.data = lista.data.split('/').reverse().join('/')
+        })
         
-        list.map(lista => {
-            //list.data = lista.data.split('/').reverse().join('/');
-            list.data = lista.data.split('/')
-        })
-        let novaLista = list
-        
-        /** 
-        list.map(lista => {
-            let pos1 = lista.data[0]
-            let pos2 = lista.data[1]
-            novaLista[0] = lista.data[pos2]
-            novaLista[1] = lista.data[pos1]
-        })
-        let novaLista = list
-        novaLista.map(lista => {
-            novaLista = new Date(lista.data[2], lista.data[1] -1, lista.data[0]) // formata 'date'
-        })
-        */
-        //let orderList = novaLista.sort(ordenar)
-        console.log(novaLista)
+        let listaOdernada = listAvCliente.sort(ordenar)
 
-        return list
+        listaOdernada.map(lista => {
+            lista.data = lista.data.split('/').reverse().join('/')
+        })
+        return listaOdernada
     }
     return(
         <View style={styles.container}>
