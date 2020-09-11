@@ -17,14 +17,16 @@ export default function AvCliente({route}){
     const [data, setData] = useState('')
     const [moneyField, setMoneyField] = useState('')
     const [validaData, setValidaData] = useState(false)
-    //const [dataUltimaCompra, setDataUltimaCompra] = useState('')
+    
     useEffect(()=>{
         loadingAvCliente()
         loadingListProdutosCliente()
+
+        
     },[])
     async function loadingAvCliente(){
 
-        await firebase.database().ref('historicoAvCliente').child(cliente.key).orderByChild('data').on('value', (snapshot) =>{
+        await firebase.database().ref('historicoAvCliente').child(cliente.key).on('value', (snapshot) =>{
             setListAvCliente([])
             snapshot.forEach( (childItem) => {
                 let list = {
@@ -195,6 +197,36 @@ export default function AvCliente({route}){
         let msg = montarMensagem()
         Linking.openURL(`whatsapp://send?text=Histórico de AV: ${cliente.nome}\n\n${msg}&phone=${cliente.contato}`)
     }
+    
+    function ordenar(a, b) {
+        return a.data < b.data;
+    }
+    function ordernarListaDate(){
+        let list = listAvCliente    
+        
+        list.map(lista => {
+            //list.data = lista.data.split('/').reverse().join('/');
+            list.data = lista.data.split('/')
+        })
+        let novaLista = list
+        
+        /** 
+        list.map(lista => {
+            let pos1 = lista.data[0]
+            let pos2 = lista.data[1]
+            novaLista[0] = lista.data[pos2]
+            novaLista[1] = lista.data[pos1]
+        })
+        let novaLista = list
+        novaLista.map(lista => {
+            novaLista = new Date(lista.data[2], lista.data[1] -1, lista.data[0]) // formata 'date'
+        })
+        */
+        //let orderList = novaLista.sort(ordenar)
+        console.log(novaLista)
+
+        return list
+    }
     return(
         <View style={styles.container}>
             <View style={styles.viewHeader}>
@@ -211,7 +243,7 @@ export default function AvCliente({route}){
             </View>
             <FlatList
                 key = {item => item.key}
-                data= {listAvCliente}
+                data=  {ordernarListaDate()} 
                 renderItem = { ({item}) => (
                     <Pressable 
                         onPressOut ={()=>editOrDelete({item})}
