@@ -61,26 +61,31 @@ export default function Produtos(){
         zerarForm()
     }
     async function confirmarEdit(){
-      if(edit.nome == '' || edit.valor == 0){
-        alert('Preencha os campos!')
+      //alert('inicio')
+      if(edit.nome == nome && edit.valor == valor){
+        alert('Produto Editado com Sucesso!')
+        zerarForm()
+        setModalEditVisible(false)
         return
       }
-      let numberValue = moneyField.getRawValue()
+      let numberValue = valor.toString()
+      alert(numberValue)
+      //alert(`numberValue: ${numberValue}`)
       await firebase.database().ref('produtos').child(edit.key).set({
           nome: nome,
-          valor: numberValue,
-          cont: '0'
+          valor: valor,
+          //cont: '0'
       })
-        setValor('')
-        setNome('')
+        zerarForm()
         setModalEditVisible(false)
-        alert('Produto Cadastrado com Sucesso!')
+        alert('Produto Editado com Sucesso!')
     }
     function editProduto({item}){
-        console.log(typeof(item.valor))
+        //console.log(typeof(item.valor))
         setEdit(item)
         setNome(item.nome),
         setValor(item.valor.toString())
+        //setValor(item.valor)
         setModalEditVisible(true)
         //alert('editar Produto')
     }
@@ -115,7 +120,7 @@ export default function Produtos(){
             <View style={styles.viewHeader}>
                 <Text style={styles.txtHeader}>Cadastro de Produtos</Text>
                 <TouchableOpacity onPress={()=>addProduto()}>
-                    {<Ionicons name="add-circle-sharp" size={30}/>}
+                    {<Ionicons name="add-circle-sharp" size={35}/>}
                 </TouchableOpacity>
             </View>
              
@@ -153,6 +158,7 @@ export default function Produtos(){
               style={styles.inputPedido}
               returnKeyType = 'next'
               placeholder= "Nome do Produto"
+              placeholderTextColor= '#000'
               value={nome}
               onChangeText={(value)=>{setNome(value)}}
             />
@@ -204,10 +210,11 @@ export default function Produtos(){
             />
               <TextInputMask
                   style={styles.inputPedido}
-                  value={valor}
+                  value={edit.valor}
                   onChangeText={(value)=>{setValor(value)}}
                   type={'money'}
-                  placeholder = 'R$00,00'
+                  placeholder = {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(valor)}
+                  placeholderTextColor= '#000'
                   ref={(ref) => setMoneyField(ref)} 
               />
             

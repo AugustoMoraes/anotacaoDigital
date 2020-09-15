@@ -30,7 +30,7 @@ export default StyleSheet.create({
         fontSize: 18
     },
     modalView: {
-        backgroundColor: "#8A2BE2",
+        backgroundColor: "#292929",
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
         padding: 10,
@@ -51,9 +51,10 @@ export default StyleSheet.create({
     },
     inputPedido:{
         backgroundColor: '#FFF',
-        borderRadius: 10,
+        borderRadius: 7,
         padding: 5,
-        marginBottom:10
+        marginBottom:7,
+        fontSize: 25
     },
     btnCancelar:{
         marginTop: 10, 

@@ -35,7 +35,7 @@ export default function ListDividaCliente({route}){
     }
     
     async function loadingProdutosCliente(){
-        await firebase.database().ref('produtosVendidos').child(cliente.key).orderByChild('data').on('value' , (snapshot)=>{
+        await firebase.database().ref('produtosVendidos').child(cliente.key).on('value' , (snapshot)=>{
             setProdutosCliente([])
             snapshot.forEach( (childItem) =>{
                 let list = {
@@ -166,7 +166,21 @@ export default function ListDividaCliente({route}){
             return produto
           }))
     }
-   
+    function ordenar(a, b) {
+        return a.data > b.data;
+    }
+    function ordernarListaDate(list){
+        list.map(lista => {
+            lista.data = lista.data.split('/').reverse().join('/')
+        })
+        
+        let listaOdernada = list.sort(ordenar)
+
+        listaOdernada.map(lista => {
+            lista.data = lista.data.split('/').reverse().join('/')
+        })
+        return listaOdernada
+    }
     return(
         <View style={styles.container}>
             
@@ -181,7 +195,7 @@ export default function ListDividaCliente({route}){
 
             <FlatList
                 key = {item => item.key}
-                data= {produtosCliente}
+                data= {ordernarListaDate(produtosCliente)}
                 renderItem = { ({item}) => (
                     <Pressable
                         onPressOut ={()=>editOrDelete({item})}
@@ -247,7 +261,7 @@ export default function ListDividaCliente({route}){
                     <View style={styles.viewCardListProdutos}>
                             <View style={styles.viewDescProduto}>
                                 <Text style={styles.txtDescProduto}>Nome: {item.nome}</Text>
-                                <Text style={styles.txtDescProduto}>Valor: {item.valor}</Text>
+                                <Text style={styles.txtDescProduto}>Valor: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
                             </View>
                             <View style={styles.viewContProduto}>
                                 <TouchableOpacity onPress={()=>incrementarProduto(item)}>

@@ -205,12 +205,12 @@ export default function AvCliente({route}){
     function ordenar(a, b) {
         return a.data > b.data;
     }
-    function ordernarListaDate(){
-        listAvCliente.map(lista => {
+    function ordernarListaDate(list){
+        list.map(lista => {
             lista.data = lista.data.split('/').reverse().join('/')
         })
         
-        let listaOdernada = listAvCliente.sort(ordenar)
+        let listaOdernada = list.sort(ordenar)
 
         listaOdernada.map(lista => {
             lista.data = lista.data.split('/').reverse().join('/')
@@ -233,7 +233,7 @@ export default function AvCliente({route}){
             </View>
             <FlatList
                 key = {item => item.key}
-                data=  {ordernarListaDate()} 
+                data=  {ordernarListaDate(listAvCliente)} 
                 renderItem = { ({item}) => (
                     <Pressable 
                         onPressOut ={()=>editOrDelete({item})}
