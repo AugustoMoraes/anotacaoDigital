@@ -46,13 +46,19 @@ export default function Produtos(){
         zerarForm()
     }
     async function confirmar(){
+        console.log(`valor: ${valor}`)
+        if(nome == '' || valor == ''){
+          alert('preencha os campos em branco')
+          return
+        }
+        let numberValue = returnNumber(valor)
         let key = firebase.database().ref('produtos').push().key
         await firebase.database().ref('produtos').child(key).set({
             nome: nome,
-            valor: valor,
+            valor: numberValue,
             cont: "0"
         })
-        setValor('')
+        zerarForm()
         alert('Produto Cadastrado com Sucesso!')
         setModalAddVisible(false)
     }
@@ -62,30 +68,46 @@ export default function Produtos(){
     }
     async function confirmarEdit(){
       //alert('inicio')
+      console.log(`Edit.valor: ${edit.valor}`)
+      console.log(`valor: ${valor}`)
       if(edit.nome == nome && edit.valor == valor){
         alert('Produto Editado com Sucesso!')
         zerarForm()
         setModalEditVisible(false)
         return
       }
-      let numberValue = valor.toString()
-      alert(numberValue)
-      //alert(`numberValue: ${numberValue}`)
+      /** 
+       console.log(`valor: ${valor}`)
+       let numberValue = numberValue.getRawValue()
+       
+       console.log(`moneyField: ${numberValue}`)
+       //alert(`numberValue: ${numberValue}`)
+       */
+      
+      let numberValue = returnNumber(valor)
+      console.log(`numberValue: ${numberValue}`)
       await firebase.database().ref('produtos').child(edit.key).set({
           nome: nome,
-          valor: valor,
-          //cont: '0'
+          valor: numberValue == 0.0 ? edit.valor : numberValue,
+          cont: '0'
       })
         zerarForm()
         setModalEditVisible(false)
         alert('Produto Editado com Sucesso!')
     }
+    function returnNumber(string){
+        let numberValue = string.substring(2)
+        let numberFormat = numberValue.replace(',','.')
+
+        return parseFloat(numberFormat)
+
+    }
     function editProduto({item}){
         //console.log(typeof(item.valor))
         setEdit(item)
         setNome(item.nome),
-        setValor(item.valor.toString())
-        //setValor(item.valor)
+        //setValor(item.valor.toString())
+        setValor(item.valor)
         setModalEditVisible(true)
         //alert('editar Produto')
     }
@@ -162,14 +184,15 @@ export default function Produtos(){
               value={nome}
               onChangeText={(value)=>{setNome(value)}}
             />
-            <TextInput
-                style={styles.inputPedido}
-                placeholder= "Valor do produto"
-                keyboardType= 'numeric'
-                value={valor}
-                onChangeText={(value)=>{setValor(value)}}
+            <TextInputMask
+                  style={styles.inputPedido}
+                  value={valor}
+                  onChangeText={(value)=>{setValor(value)}}
+                  type={'money'}
+                  placeholder = {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(valor)}
+                  placeholderTextColor= '#000'
+                  ref={ (ref) => setMoneyField(ref)} 
             />
-            
             
             <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
             <TouchableOpacity
@@ -204,7 +227,7 @@ export default function Produtos(){
             <TextInput
               style={styles.inputPedido}
               returnKeyType = 'next'
-              placeholder= "Nome do Produto"
+              //placeholder= "Nome do Produto"
               value={nome}
               onChangeText={(value)=>{setNome(value)}}
             />

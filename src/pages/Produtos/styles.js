@@ -60,7 +60,7 @@ export default StyleSheet.create({
         marginTop: 10, 
         marginBottom: 5,
         height: 40,
-        backgroundColor: '#DC143C',
+        backgroundColor: '#FFF',
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
@@ -70,10 +70,14 @@ export default StyleSheet.create({
         marginTop: 10, 
         marginBottom: 5,
         height: 40,
-        backgroundColor: '#008000',
+        backgroundColor: '#FFF',
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 7
     },
+    txtPedido:{
+        fontSize: 25,
+        color: '#000'
+    }
 })
