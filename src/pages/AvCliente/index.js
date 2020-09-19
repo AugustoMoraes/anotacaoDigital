@@ -222,7 +222,7 @@ export default function AvCliente({route}){
             <View style={styles.viewHeader}>
                 <Text style={styles.txtHeader}>Histórico de AV</Text>
                     <TouchableOpacity onPress={openModal}>
-                        <Ionicons name="add-circle-sharp" size={40}/>
+                        <Ionicons name="add-circle-sharp" size={40} color='#000'/>
                     </TouchableOpacity>
             </View>
             <View style={[styles.viewHeader,{justifyContent: 'space-between', marginHorizontal: 10}]}>

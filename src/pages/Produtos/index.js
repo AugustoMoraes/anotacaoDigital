@@ -142,7 +142,7 @@ export default function Produtos(){
             <View style={styles.viewHeader}>
                 <Text style={styles.txtHeader}>Cadastro de Produtos</Text>
                 <TouchableOpacity onPress={()=>addProduto()}>
-                    {<Ionicons name="add-circle-sharp" size={35}/>}
+                    {<Ionicons name="add-circle-sharp" size={35} color='#000'/>}
                 </TouchableOpacity>
             </View>
              
@@ -157,10 +157,10 @@ export default function Produtos(){
                         </View>
                         <View>
                             <TouchableOpacity onPress={()=>editProduto({item})}>
-                                {<Entypo name="edit" size={28}/>}
+                                {<Entypo name="edit" size={28} color='#000'/>}
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=>deleteProduto({item})}>
-                                {<Ionicons name="close-circle" size={28}/>}
+                                {<Ionicons name="close-circle" size={28} color='#000'/>}
                             </TouchableOpacity>
                         </View>
                     </View>

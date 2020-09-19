@@ -16,6 +16,7 @@ export default StyleSheet.create({
     },
     txtHeader:{
         fontSize: 25,
+        color: '#000',
         backgroundColor: '#fff',
         textAlign: 'center'
     },
@@ -39,7 +40,8 @@ export default StyleSheet.create({
     },
     txtDescProduto:{
         fontSize: 17,
-        paddingBottom: 5
+        paddingBottom: 5,
+        color: '#000'
     },
     viewDescProduto:{
         justifyContent: "space-around"

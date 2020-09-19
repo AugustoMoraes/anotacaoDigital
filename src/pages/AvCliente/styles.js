@@ -12,7 +12,7 @@ export default StyleSheet.create({
     },
     txtHeader:{
        fontSize: 25,
-       color: '#fff'
+       color: '#000'
     },
     viewCard:{
         backgroundColor: '#fff',
@@ -22,8 +22,9 @@ export default StyleSheet.create({
         borderRadius: 7
     },
     txtCard:{
-        fontSize: 16,
+        fontSize: 20,
         marginBottom: 5,
+        color: '#000'
     },
     viewFooter:{
         marginHorizontal: 5,
@@ -33,6 +34,7 @@ export default StyleSheet.create({
     },
     txtFooter:{
         fontSize: 25,
+        color: '#000'
     },
     viewTitulo:{
         justifyContent: 'center',
@@ -41,7 +43,7 @@ export default StyleSheet.create({
     },
     txtTitulo:{
         color: '#FFF',
-        fontSize: 30
+        fontSize: 30,
     },
     viewModal:{
         backgroundColor: '#292929',

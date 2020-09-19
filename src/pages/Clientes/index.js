@@ -83,7 +83,7 @@ export default function Clientes(){
                     text: 'EDITAR', onPress: ()=> {editar({item})}
                 },
             ]
-        )
+        ) 
     }
     async function deletar({item}){
         if(item.totalCompras > item.totalPago){
@@ -144,7 +144,7 @@ export default function Clientes(){
             <View style={styles.viewHeader}>
                 <Text style={styles.txtHeader}>Clientes em Débito</Text>
                 <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
-                    {<Ionicons name="add-circle-sharp" size={30}/>}
+                    {<Ionicons name="add-circle-sharp" size={35} color= '#000'/>}
                 </TouchableOpacity>
             </View>
             <View style={styles.viewTotalReceber}>

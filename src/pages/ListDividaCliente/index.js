@@ -188,7 +188,7 @@ export default function ListDividaCliente({route}){
             <View style={styles.viewHeader}>
                 <Text style={styles.txtHeader}>Listar Produtos Comprados</Text>
                 <TouchableOpacity onPress={()=>setModalAddProdutosVisible(true)}>
-                    {<Ionicons name="add-circle-sharp" size={35}/>}
+                    {<Ionicons name="add-circle-sharp" size={35} color='#000'/>}
                 </TouchableOpacity>
             </View>
             
@@ -252,7 +252,7 @@ export default function ListDividaCliente({route}){
             >
                 <View style={{flex: 1, backgroundColor: '#999',paddingTop: 10}}>
                 <View style={{justifyContent: 'center' , alignItems: 'center'}}>
-                    <Text style={{fontSize: 40}}>Lista de Produtos</Text>
+                    <Text style={{fontSize: 40, color:'#000'}}>Lista de Produtos</Text>
                 </View>
                 <FlatList
                 key = {item => item.key}
@@ -265,11 +265,11 @@ export default function ListDividaCliente({route}){
                             </View>
                             <View style={styles.viewContProduto}>
                                 <TouchableOpacity onPress={()=>incrementarProduto(item)}>
-                                    <Ionicons name= 'md-add-circle' size = {30}/>
+                                    <Ionicons name= 'md-add-circle' size = {30} color='#000'/>
                                 </TouchableOpacity>
-                                <Text style={{fontSize: 19,marginVertical: 3}}>{item.cont}</Text>
+                                <Text style={{fontSize: 19,marginVertical: 3, color: '#000'}}>{item.cont}</Text>
                                 <TouchableOpacity onPress={()=>decrementarProduto(item)}>
-                                    <AntDesign name= 'minuscircle' size = {25}/>
+                                    <AntDesign name= 'minuscircle' size = {25} color='#000'/>
                                 </TouchableOpacity>
                             </View>
                     </View>

@@ -27,7 +27,8 @@ export default StyleSheet.create({
         borderRadius: 7
     },
     txtCard:{
-        fontSize: 18
+        fontSize: 18,
+        color: '#000'
     },
     modalView: {
         backgroundColor: "#292929",

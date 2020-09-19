@@ -16,6 +16,7 @@ export default StyleSheet.create({
     },
     txtHeader:{
         fontSize: 27,
+        color: '#000'
     },
     viewTotalReceber:{
         backgroundColor: '#fff',
@@ -25,9 +26,11 @@ export default StyleSheet.create({
     },
     txtTotalReceber:{
         fontSize: 25,
+        color: '#000'
     },
     txtDescricao:{
-        fontSize: 17
+        fontSize: 17,
+        color: '#000'
     },
     viewModal:{
         flex: 1,
@@ -57,7 +60,8 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         fontSize: 25,
         padding: 5,
-        borderRadius: 7
+        borderRadius: 7,
+        color: '#000'
     },
     viewCard:{
         flexDirection: 'row',
@@ -75,6 +79,7 @@ export default StyleSheet.create({
     },
     txtBtnCard:{
         fontSize: 22,
+        color: '#000'
     },
     txt:{
         fontSize: 20
