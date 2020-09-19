@@ -83,8 +83,12 @@ export default function Produtos(){
        console.log(`moneyField: ${numberValue}`)
        //alert(`numberValue: ${numberValue}`)
        */
-      
-      let numberValue = returnNumber(valor)
+      let numberValue
+      if(isNumber(valor)){
+        numberValue = valor
+      }else{
+        numberValue = returnNumber(valor)
+      }
       console.log(`numberValue: ${numberValue}`)
       await firebase.database().ref('produtos').child(edit.key).set({
           nome: nome,
@@ -94,6 +98,9 @@ export default function Produtos(){
         zerarForm()
         setModalEditVisible(false)
         alert('Produto Editado com Sucesso!')
+    }
+    function isNumber(valor){
+      return typeof valor === "number"
     }
     function returnNumber(string){
         let numberValue = string.substring(2)
