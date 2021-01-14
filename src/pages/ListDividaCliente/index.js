@@ -191,7 +191,7 @@ export default function ListDividaCliente({route}){
                     {<Ionicons name="add-circle-sharp" size={35} color='#000'/>}
                 </TouchableOpacity>
             </View>
-            
+             
 
             <FlatList
                 key = {item => item.key}

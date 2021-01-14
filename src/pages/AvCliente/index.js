@@ -217,6 +217,9 @@ export default function AvCliente({route}){
         })
         return listaOdernada
     }
+    function deleteHistoricoAV(){
+        alert('Botão Acionado!')
+    }
     return(
         <View style={styles.container}>
             <View style={styles.viewHeader}>
@@ -231,6 +234,17 @@ export default function AvCliente({route}){
                     <Ionicons name="logo-whatsapp" size={35} color="#2d5"/>
                 </TouchableOpacity>
             </View>
+            {
+                (cliente.totalCompras === cliente.totalPago)&&(
+                    <View style={styles.viewDeleteDividasPagas}>
+                        <TouchableOpacity style={styles.btnDeleteDividasPagas} onPress={deleteHistoricoAV}>
+                            <Text style={styles.txtDeleteDividasPagas}>
+                                Limpar Histórico de AV
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+            }
             <FlatList
                 key = {item => item.key}
                 data=  {ordernarListaDate(listAvCliente)} 

@@ -7,9 +7,8 @@ export default StyleSheet.create({
     },
     viewHeader:{
         flexDirection: 'row', 
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         marginVertical: 7,
-        paddingHorizontal: 10,
         backgroundColor: '#fff',
         borderRadius: 7,
         width: '100%',
@@ -49,6 +48,19 @@ export default StyleSheet.create({
     viewContProduto:{
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    viewDeleteDividasPagas:{
+        backgroundColor: '#ffffff',
+        justifyContent: 'center',
+        alignItems: 'center'
+        
+    },
+    btnDeleteDividasPagas:{
+        backgroundColor: '#fff'
+    },
+    txtDeleteDividasPagas:{
+        color: '#000',
+        fontSize: 17
     },
     viewFooter:{
         marginHorizontal: 5,
