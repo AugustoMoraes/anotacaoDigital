@@ -49,19 +49,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    viewDeleteDividasPagas:{
-        backgroundColor: '#ffffff',
-        justifyContent: 'center',
-        alignItems: 'center'
-        
-    },
-    btnDeleteDividasPagas:{
-        backgroundColor: '#fff'
-    },
-    txtDeleteDividasPagas:{
-        color: '#000',
-        fontSize: 17
-    },
     viewFooter:{
         marginHorizontal: 5,
         backgroundColor: '#fff',

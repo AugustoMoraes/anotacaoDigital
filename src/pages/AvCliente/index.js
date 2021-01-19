@@ -17,10 +17,12 @@ export default function AvCliente({route}){
     const [data, setData] = useState('')
     const [moneyField, setMoneyField] = useState('')
     const [validaData, setValidaData] = useState(false)
-    
+    const [debito, setDebito] = useState(0)
     useEffect(()=>{
         loadingAvCliente()
         loadingListProdutosCliente()
+        console.log(listProdutosCliente)
+        setDebito(cliente.totalCompras - cliente.totalPago)
         //ordernarListaDate()
         
     },[])
@@ -57,23 +59,22 @@ export default function AvCliente({route}){
     function msgDataUltimaCompraCliente(){
         //loadingListProdutosCliente()
         //let tamanho = listProdutosCliente.length
-        let ultimoProduto = listProdutosCliente[listProdutosCliente.length - 1]
-
+        let ultimoProduto = listProdutosCliente[listProdutosCliente.length -1]
         //console.log(`Ultimo Produto: ${ultimoProduto.nome} - Quantidade: ${ultimoProduto.qtd}`)
-        let list = listProdutosCliente.filter(dataCompra => dataCompra.data === ultimoProduto.data)
+        let list = listProdutosCliente.filter(dataCompra => dataCompra.data == ultimoProduto.data)
 
-        let msgUltimasCompras = ``
+        let msgUltimasCompras = `ultimoProduto :${ultimoProduto.data}\n\n`
         
         list.map(produto =>{
-            msgUltimasCompras += `Produto: ${produto.nome}\nQuantidade: ${produto.qtd}\nData: ${produto.data}\n=========================\n`
+            msgUltimasCompras += `\n\nProduto: ${produto.nome}\nQuantidade: ${produto.qtd}\n=========================\n`
         })
 
         return msgUltimasCompras
     }
     function editOrDelete({item}){
         Alert.alert(
-            "Mensagem",
-            "Descrição da Mensagem",
+            "Selecione uma opção!",
+            "",
             [
                 {
                     text: 'CANCELAR',
@@ -146,7 +147,7 @@ export default function AvCliente({route}){
             return 0
         }else{
             let key = firebase.database().ref('historicoAvCliente').push().key
-            let datAtual = new Date()
+            //let datAtual = new Date()
             await firebase.database().ref('historicoAvCliente').child(cliente.key).child(key).set({
                 valor: numberValue,
                 data: new Date().toLocaleDateString(),
@@ -218,7 +219,30 @@ export default function AvCliente({route}){
         return listaOdernada
     }
     function deleteHistoricoAV(){
-        alert('Botão Acionado!')
+        if(cliente.totalCompras != cliente.totalPago){
+            alert('A dívida ainda não foi quitada!')
+            return
+        }
+        Alert.alert(
+            "Você deseja excluir o histórico de Av?",
+            "",
+            [
+                {
+                    text: 'CANCELAR',
+                },
+                {
+                    text: 'CONFIRMAR', onPress:async ()=>
+                        {
+                         
+                            await firebase.database().ref('historicoAvCliente')
+                                    .child(cliente.key).remove()
+                        }
+
+                    
+                },
+            ]
+        )
+
     }
     return(
         <View style={styles.container}>
@@ -236,9 +260,9 @@ export default function AvCliente({route}){
             </View>
             {
                 (cliente.totalCompras === cliente.totalPago)&&(
-                    <View style={styles.viewDeleteDividasPagas}>
-                        <TouchableOpacity style={styles.btnDeleteDividasPagas} onPress={deleteHistoricoAV}>
-                            <Text style={styles.txtDeleteDividasPagas}>
+                    <View style={styles.viewDeleteDividas}>
+                        <TouchableOpacity style={styles.btnDeleteDividas} onPress={deleteHistoricoAV}>
+                            <Text style={styles.txtDeleteDividas}>
                                 Limpar Histórico de AV
                             </Text>
                         </TouchableOpacity>
@@ -274,7 +298,7 @@ export default function AvCliente({route}){
                 )}
                 />
                 <View style={styles.viewFooter}>
-                        <Text style={styles.txtFooter}>Débito de: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(cliente.totalCompras - cliente.totalPago)}
+                        <Text style={styles.txtFooter}>Débito de: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(debito)}
                         </Text>
                 </View>
             {/** MODAL DE ATUALIZAÇÃO DAS INFORMAÇÕES */}

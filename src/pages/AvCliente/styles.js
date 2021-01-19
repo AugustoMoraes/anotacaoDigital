@@ -14,6 +14,22 @@ export default StyleSheet.create({
        fontSize: 25,
        color: '#000'
     },
+    viewDeleteDividas:{
+        marginVertical: 7,
+        justifyContent: 'center',
+        alignItems: 'center'
+        
+    },
+    btnDeleteDividas:{
+        backgroundColor: '#fff',
+        padding: 5,
+        borderRadius: 5
+    },
+    txtDeleteDividas:{
+        color: '#000',
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
     viewCard:{
         backgroundColor: '#fff',
         marginVertical: 5,
