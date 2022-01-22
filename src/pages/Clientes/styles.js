@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native'
 export default StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#999'
+        backgroundColor: '#f4f7ff',
     },
     viewHeader:{
         //height: 30,
@@ -19,49 +19,77 @@ export default StyleSheet.create({
         color: '#000'
     },
     viewTotalReceber:{
-        backgroundColor: '#fff',
-        marginTop:5,
+        marginTop:7,
         borderRadius: 4,
         padding: 5
     },
-    txtTotalReceber:{
-        fontSize: 25,
-        color: '#000'
+    txtDesc:{
+        fontSize: 23,
+        color: '#242424',
+        marginHorizontal: 10,
+        fontWeight: 'bold'
+    },
+    cardReceber:{
+        marginTop: 7,
+        paddingVertical: 30,
+        width: '50%', 
+        backgroundColor: '#39def1',
+        borderRadius: 15,
+        marginHorizontal: 17
+        
+    },
+    txtValorReceber:{
+        color: '#fff',
+        fontSize: 26,
+        marginLeft: 10
+    },
+    txtCliente:{
+        fontSize:17,
+        color: '#909090',
+        fontWeight: 'bold'
+    },
+    txtNome:{
+        fontSize: 30,
+        color: '#242424',
+        //fontFamily: 'Poppins'
     },
     txtDescricao:{
         fontSize: 17,
-        color: '#000'
-    },
-    viewModal:{
-        flex: 1,
-        backgroundColor: '#2d5',
-        padding: 5,
+        color: '#909090'
     },
     viewInput:{
-        marginVertical:5,
+        marginVertical:25,
         marginHorizontal: 7,
         padding: 5,
     },
+    txtTipoInput:{
+        fontSize: 23,
+        color: '#000'
+    },
     input:{
         marginVertical:5,
-        fontSize: 25,
+        marginBottom: 25,
+        fontSize: 18,
         borderWidth: 2,
-        borderColor: '#fff',
-        borderRadius: 7,
-        color: '#fff'
+        borderColor: '#000',
+        borderRadius: 5,
+        padding: 10,
+        color: '#000',
+        backgroundColor: '#f2f2f2'
     },
     viewBotao:{
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginTop: 30
+        //marginTop: 30
     },
     btn:{
-        backgroundColor: '#fff',
-        fontSize: 25,
+        backgroundColor: '#AEAEAE',
+        fontSize: 23,
         padding: 5,
+        paddingHorizontal: 10,
         borderRadius: 7,
-        color: '#000'
+        color: '#FFF',
     },
     viewCard:{
         flexDirection: 'row',
@@ -70,7 +98,11 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         paddingVertical: 10,
         margin: 5,
-        borderRadius: 7
+        borderRadius: 7,
+        elevation: 3,
+        shadowOpacity: 0.9,
+        opacity: 0.9
+        
     },
     viewBotaoCard:{
         marginVertical: -10,
@@ -78,7 +110,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     txtBtnCard:{
-        fontSize: 22,
+        fontSize: 17,
         color: '#000'
     },
     txt:{
@@ -86,8 +118,9 @@ export default StyleSheet.create({
     },
     viewModal:{
         flex: 1,
+        paddingTop: 45,
         //height: '50%',
-        backgroundColor:'#292929'
+        backgroundColor:'#f4f7ff'
     },
     viewTitulo:{
         justifyContent: 'center',
@@ -95,8 +128,9 @@ export default StyleSheet.create({
         marginVertical: 15
     },
     txtTitulo:{
-        color: '#FFF',
-        fontSize: 30
+        marginVertical: 18,
+        color: '#909090',
+        fontSize: 27
     },
     wrapperCustom: {
         marginVertical: 5,
@@ -110,5 +144,22 @@ export default StyleSheet.create({
         //borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#f0f0f0',
         backgroundColor: '#f9f9f9'
-      }
+      },
+     btnAdd:{
+         justifyContent: 'center',
+         alignItems: 'center',
+         //position: 'absolute'
+     }, 
+     viewDivida:{
+        backgroundColor: "#37dcf2",
+        width: '65%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 3,
+        borderRadius: 5
+     },
+     txtDivida:{
+         fontSize: 20,
+         color:  '#fff'
+     },
 })

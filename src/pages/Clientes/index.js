@@ -5,6 +5,7 @@ import styles from './styles'
 import firebase from '../../database/firebase'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import ButtonAdd from '../../components/ButtonAddTab'
 Ionicons.loadFont()
 
 export default function Clientes(){
@@ -106,8 +107,6 @@ export default function Clientes(){
         setEdit(item)
         setNome(item.nome)
         setContato(item.contato.substring(4))
-        //setContato(contato.substring(4))
-        //console.log(`Contato: ${contato}`)
         setModalEditVisible(true)
         //alert(`Usuário Editado ${item.nome}`)
     }
@@ -140,17 +139,21 @@ export default function Clientes(){
         return total
     }
     return(
+        
         <View style={styles.container}>
-            <View style={styles.viewHeader}>
-                <Text style={styles.txtHeader}>Clientes em Débito</Text>
-                <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
-                    {<Ionicons name="add-circle-sharp" size={35} color= '#000'/>}
-                </TouchableOpacity>
-            </View>
+            
             <View style={styles.viewTotalReceber}>
-                <Text style={styles.txtTotalReceber}>
-                    Total a Receber: {Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'}).format(totalReceber())}
+                <Text style={styles.txtDesc}>
+                    Total a Receber
                 </Text>
+                <View style={styles.cardReceber}>
+                    <Text style={styles.txtValorReceber}>
+                        {Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'}).format(totalReceber())} 
+                    </Text>
+                </View>
+            </View>
+            <View style={{ marginVertical: 15}}>
+                <Text style={styles.txtDesc}>Compras</Text>
             </View>
             <FlatList
                 keyExtractor = {item => item.key}
@@ -162,14 +165,16 @@ export default function Clientes(){
                             {
                             backgroundColor: pressed
                                 ? '#777'
-                                : '#fff'
+                                : '#fff',   
                             },
+                            
                             styles.wrapperCustom
                         ]}
                     >
                     <View style={styles.viewCard}>
                         <View>
-                            <Text style={styles.txtDescricao}>Nome: {item.nome}</Text>
+                            <Text style={styles.txtCliente}>Cliente</Text>
+                            <Text style={styles.txtNome}>{item.nome}</Text>
                             <Text style={styles.txtDescricao}>
                                 Total de Compras: {Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'}).format(item.totalCompras)}
                             </Text>
@@ -179,7 +184,19 @@ export default function Clientes(){
                             {
                                 
                                 (item.totalCompras == item.totalPago) &&(
-                                    <Text style={[styles.txtDescricao,{color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Dívida Paga</Text>
+                                    <View style={styles.viewDivida}>
+                                        <Text style={styles.txtDivida}> Dívida Paga </Text>
+                                    </View>
+                                    //<Text style={[styles.txtDescricao,{backgroundColor: '#37dcf2',color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Dívida Paga</Text>
+                                )
+                            }
+                            {
+                                
+                                (item.totalCompras != item.totalPago) &&(
+                                    <View style={[styles.viewDivida,{backgroundColor: '#647AFF'}]}>
+                                        <Text style={styles.txtDivida}> Pendente </Text>
+                                    </View>
+                                    //<Text style={[styles.txtDescricao,{backgroundColor: '#37dcf2',color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Dívida Paga</Text>
                                 )
                             }
                         </View>
@@ -195,39 +212,47 @@ export default function Clientes(){
                     </Pressable>
                 )}
             />
+            <View style={styles.btnAdd}>
+                <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
+                    <ButtonAdd/>
+                </TouchableOpacity>
+            </View>
             <Modal
                 animationType ='slide'
                 visible = {modalAddVisible}
             >
-                <View style={styles.viewModal}>
+                <View style={styles.viewModal}> 
                     <View style={styles.viewTitulo}>
                         <Text style={styles.txtTitulo}>Adicionar Cliente</Text>
                     </View>
+                    <View style={{flex: 1, backgroundColor: '#fff', marginTop: 30, borderTopRightRadius: 35, borderTopLeftRadius: 35}}>
                     <View style={styles.viewInput}>
+                    <Text style={styles.txtTipoInput}>Nome do Cliente</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder= 'Nome do Cliente'
-                        placeholderTextColor = '#ddd'
+                        placeholder= 'digite seu nome'
+                        //placeholderTextColor = '#ddd'
                         value = {nome}
                         onChangeText = {(value)=>setNome(value)}
                     />
+                    <Text style={styles.txtTipoInput}>Contato</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder = 'Contato'
-                        placeholderTextColor = '#ddd'
+                        placeholder = 'número de telefone'
+                        //placeholderTextColor = '#ddd'
                         keyboardType = 'numeric'
                         value = {contato}
-                        onChangeText = {(value)=>setContato(value)}
+                        onChangeText = {(value)=>setContato(value)} 
                     />
                     </View>
-
                     <View style={styles.viewBotao}>
                         <TouchableOpacity onPress={cancelar}>
                             <Text style={styles.btn}>Cancelar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={confirmar}>
-                            <Text style={styles.btn}>Confirmar</Text>
+                            <Text style={[styles.btn,{backgroundColor: '#37DCF2'}]}>Confirmar</Text>
                         </TouchableOpacity>
+                    </View>
                     </View>
                 </View>
             </Modal>
@@ -237,22 +262,27 @@ export default function Clientes(){
                 visible = {modalEditVisible}
             >
                 <View style={styles.viewModal}>
+                <View style={styles.viewTitulo}>
+                        <Text style={styles.txtTitulo}>Atualizar Cliente</Text>
+                </View>
+                    <View style={{flex: 1, backgroundColor: '#fff', marginTop: 30, borderTopRightRadius: 35, borderTopLeftRadius: 35}}>
                     <View style={styles.viewInput}>
+                    <Text style={styles.txtTipoInput}>Nome do Cliente</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder= 'Nome do Cliente'
-                        placeholderTextColor = '#fff'
+                        placeholder= 'digite seu nome'
+                        //placeholderTextColor = '#fff'
                         value = {nome}
                         onChangeText = {(value)=>setNome(value)}
                     />
+                    <Text style={styles.txtTipoInput}>Contato</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder = 'Contato'
-                        placeholderTextColor = '#fff'
+                        placeholder = 'digite seu número de telefone'
+                        //placeholderTextColor = '#fff'
                         keyboardType = 'numeric'
                         value = {contato}
-                        //placeholder = {edit.contato}
-                        //placeholderTextColor = '#000'
+                        placeholderTextColor = '#000'
                         onChangeText = {(value)=>setContato(value)}
                     />
                     </View>
@@ -262,8 +292,9 @@ export default function Clientes(){
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={()=>confirmarEdicao()}>
-                            <Text style={styles.btn}>Confirmar</Text>
+                            <Text style={[styles.btn,{backgroundColor: '#37DCF2'}]}>Confirmar</Text>
                         </TouchableOpacity>
+                    </View>
                     </View>
                 </View>
             </Modal>

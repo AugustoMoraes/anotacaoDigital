@@ -5,6 +5,8 @@ import {View, Text, FlatList, TouchableOpacity, Modal,TextInput,Alert} from 'rea
 import {TextInputMask} from 'react-native-masked-text'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Entypo from 'react-native-vector-icons/Entypo'
+import ButtonAdd from '../../components/ButtonAddTab'
+
 Ionicons.loadFont()
 Entypo.loadFont()
 export default function Produtos(){
@@ -148,9 +150,11 @@ export default function Produtos(){
             
             <View style={styles.viewHeader}>
                 <Text style={styles.txtHeader}>Cadastro de Produtos</Text>
+                {/** 
                 <TouchableOpacity onPress={()=>addProduto()}>
                     {<Ionicons name="add-circle-sharp" size={35} color='#000'/>}
                 </TouchableOpacity>
+                */}
             </View>
              
             <FlatList
@@ -159,20 +163,30 @@ export default function Produtos(){
                 renderItem = { ({item}) => (
                     <View style={styles.viewCardListProdutos}>
                         <View>
-                            <Text style={styles.txtCard}>Nome: {item.nome}</Text>
-                            <Text style={styles.txtCard}>Valor: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
+                            <Text style={styles.txtDescricao}>Produto</Text>
+                            <Text style={styles.txtCard}>{item.nome}</Text>
+                            <Text style={styles.txtDescricao}>Valor: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
                         </View>
-                        <View>
+                        <View style={{justifyContent: 'space-between'}}>
+                            <View>
                             <TouchableOpacity onPress={()=>editProduto({item})}>
                                 {<Entypo name="edit" size={28} color='#000'/>}
                             </TouchableOpacity>
+                            </View>
+                            <View>
                             <TouchableOpacity onPress={()=>deleteProduto({item})}>
                                 {<Ionicons name="close-circle" size={28} color='#000'/>}
                             </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 )}
             />
+            <View style={styles.btnAdd}>
+                <TouchableOpacity onPress={()=>addProduto()}>
+                    <ButtonAdd/>
+                </TouchableOpacity>
+            </View>
         <Modal
             animationType="slide"
             visible={modalAddVisible}
@@ -180,43 +194,41 @@ export default function Produtos(){
         >
           <View style={{flex: 1, justifyContent:'flex-end'}}>
           <View style={styles.modalView}>
-                <View style={styles.headerModalEdit}>
-                  <Text style={styles.txtHeaderModalEdit}>Cadastro de Produto</Text>
+                <View style={styles.viewTitulo}>
+                  <Text style={styles.txtTitulo}>Cadastro de Produto</Text>
                 </View>
+              <View style={{flex: 1, backgroundColor: '#fff', marginTop: 30, borderTopRightRadius: 35, borderTopLeftRadius: 35}}>   
+            <View style={styles.viewInput}>  
+            <Text style={styles.txtTipoInput}>Nome do Produto</Text>
             <TextInput
-              style={styles.inputPedido}
+              style={styles.input}
               returnKeyType = 'next'
               placeholder= "Nome do Produto"
-              placeholderTextColor= '#000'
+              placeholderTextColor= '#999'
               value={nome}
               onChangeText={(value)=>{setNome(value)}}
             />
+            <Text style={styles.txtTipoInput}>Valor do Produto</Text>
             <TextInputMask
-                  style={styles.inputPedido}
+                  style={styles.input}
                   value={valor}
                   onChangeText={(value)=>{setValor(value)}}
                   type={'money'}
                   placeholder = {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(valor)}
-                  placeholderTextColor= '#000'
+                  placeholderTextColor= '#999'
                   ref={ (ref) => setMoneyField(ref)} 
             />
-            
-            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
-            <TouchableOpacity
-              style={styles.btnCancelar}
-              onPress={()=>cancelar()}
-            >
-              <Text style={styles.txtPedido}>Cancelar</Text>
+            </View>
+            <View style={styles.viewBotao}>
+            <TouchableOpacity onPress={()=>cancelar()}>
+              <Text style={styles.btn}>Cancelar</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btnConfirmar}
-              onPress={()=>confirmar()}
-            >
-              <Text style={styles.txtPedido}>Confirmar</Text>
+            <TouchableOpacity onPress={()=>confirmar()}>
+              <Text style={[styles.btn,{backgroundColor: '#37DCF2'}]}>Confirmar</Text>
             </TouchableOpacity>
             </View>
           </View>
-
+          </View>      
           </View>
         </Modal>
 
@@ -226,44 +238,46 @@ export default function Produtos(){
             visible={modalEditVisible}
             transparent= {true}
         >
-          <View style={styles.viewModalEdit}>
+          <View style={{flex: 1, justifyContent:'flex-end'}}>
           <View style={styles.modalView}>
-              <View style={styles.headerModalEdit}>
-                  <Text style={styles.txtHeaderModalEdit}>Atualização do Produto</Text>
+              <View style={styles.viewTitulo}>
+                  <Text style={styles.txtTitulo}>Editar Produto</Text>
               </View>
+              <View style={{flex: 1, backgroundColor: '#fff', marginTop: 30, borderTopRightRadius: 35, borderTopLeftRadius: 35}}>
+              <View style={styles.viewInput}>
+              <Text style={styles.txtTipoInput}>Nome do Produto</Text>
             <TextInput
-              style={styles.inputPedido}
+              style={styles.input}
               returnKeyType = 'next'
-              //placeholder= "Nome do Produto"
+              placeholder= "Nome do Produto"
               value={nome}
               onChangeText={(value)=>{setNome(value)}}
             />
+            <Text style={styles.txtTipoInput}>Valor do Produto</Text>
               <TextInputMask
-                  style={styles.inputPedido}
+                  style={styles.input}
                   value={edit.valor}
                   onChangeText={(value)=>{setValor(value)}}
                   type={'money'}
                   placeholder = {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(valor)}
-                  placeholderTextColor= '#000'
                   ref={(ref) => setMoneyField(ref)} 
               />
-            
-            <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
+            </View>
+            <View style={styles.viewBotao}>
             <TouchableOpacity
-              style={styles.btnCancelar}
               onPress={()=>cancelarEdit()}
             >
-              <Text style={styles.txtPedido}>Cancelar</Text>
+              <Text style={styles.btn}>Cancelar</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.btnConfirmar}
+
               onPress={()=>confirmarEdit()}
             >
-              <Text style={styles.txtPedido}>Confirmar</Text>
+              <Text style={[styles.btn,{backgroundColor: '#37DCF2'}]}>Confirmar</Text>
             </TouchableOpacity>
             </View>
           </View>
-
+          </View>
           </View>
         </Modal>
         </View>

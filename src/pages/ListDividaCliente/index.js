@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import {View,Text,FlatList,TouchableOpacity, Modal, Pressable, Alert, TextInput} from 'react-native'
+import {useNavigation} from '@react-navigation/native'
 import {TextInputMask} from 'react-native-masked-text'
 import firebase from '../../database/firebase'
 import styles from './styles'
@@ -11,6 +12,7 @@ AntDesign.loadFont()
 
 export default function ListDividaCliente({route}){
     const cliente = route.params.item
+    const navigation = useNavigation()
     const [produtos, setProdutos] = useState([])
     const [edit, setEdit] = useState([])
     const [data, setData] = useState('')
@@ -184,14 +186,22 @@ export default function ListDividaCliente({route}){
     return(
         <View style={styles.container}>
             
-            <Text style={styles.txtHeader}>Cliente: {cliente.nome}</Text>
             <View style={styles.viewHeader}>
-                <Text style={styles.txtHeader}>Listar Produtos Comprados</Text>
-                <TouchableOpacity onPress={()=>setModalAddProdutosVisible(true)}>
-                    {<Ionicons name="add-circle-sharp" size={35} color='#000'/>}
-                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.goBack()}>
+                    {<AntDesign name="close" size={35} color='#000'/>}
+                </TouchableOpacity>               
+                <Text style={styles.txtHeader}>{cliente.nome}</Text>
             </View>
-             
+             <View style={styles.viewList}>
+                <View style={styles.viewDescricao}>
+                    <Text style={styles.txt}>
+                        Produtos
+                    </Text>
+                    <Text style={styles.txtDescricao}>
+                        Clique no icone no canto inferior direito para adicionar um novo produto.
+                    </Text>
+                   
+                </View>
 
             <FlatList
                 key = {item => item.key}
@@ -209,36 +219,65 @@ export default function ListDividaCliente({route}){
                           ]}
                     >
                     <View style={styles.viewCardListProdutosComprados}>
-                        {
+                         {
                             (item.divida == null)&&(
                                 <Text style={styles.txtDescProduto}>Nome: {item.nome}</Text>
                             )
                         }
                         {
                             (item.divida == null)&&(
-                                <Text style={styles.txtDescProduto}>Quantidade: {item.qtd}</Text>
+                                <Text style={[styles.txtDescProduto,{fontSize: 15}]}>Quantidade: {item.qtd}</Text>
                             )
                         }
                         {
                             (item.divida == null)&&(
-                                <Text style={styles.txtDescProduto}>Data: {item.data}</Text>
+                                <Text style={[styles.txtDescProduto,{fontSize: 15}]}>Data: {item.data}</Text>
                             )
                         }
                         {
-                            (item.divida != null)&&(
-                                <Text style={[styles.txtDescProduto,{color: '#007111', fontWeight: 'bold'}]}>{item.divida}</Text>
+                            (item.divida == null)&&(
+                                <View style={styles.viewDivisao}>
+                                    
+                                </View>
                             )
                         }
-                        {
-                            (item.divida != null)&&(
-                                <Text style={styles.txtDescProduto}>Data: {item.data}</Text>
-                            )
-                        }
-                            
+                        <View style={styles.viewDividaPaga}>
+                                {
+                                    (item.divida != null)&&(
+                                        <AntDesign name="checkcircle" size={43} color="#6ECB96" style={{marginVertical: 10}}/>         
+                                    )
+                                }
+                            <View style={{flexDirection: 'column', marginLeft: 10}}>
+                                <View sty>
+                               
+                                {
+                                    (item.divida != null)&&(
+                                        <Text style={styles.txtPago}>{item.divida}</Text>
+                                    )
+                                }
+                                {
+                                    (item.divida != null)&&(
+                                        <Text style={styles.txtPago}>Data: {item.data}</Text>
+                                    )
+                                }
+                                </View>
+                            </View>
+
+                        </View>    
                     </View>
                     </Pressable>
                 )}
                 />
+                {/** 
+                
+                */}
+                <View style={styles.viewBtnAdd}>
+                    <TouchableOpacity onPress={()=>setModalAddProdutosVisible(true)}>
+                            {<Ionicons name="add-circle-sharp" size={65} color='#38E1EE'/>}
+                        </TouchableOpacity>
+                </View>
+            </View>
+           
             {/** 
             <View style={styles.viewFooter}>
                 <Text style={styles.txtFooter}>Total a Pagar: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).
@@ -250,54 +289,63 @@ export default function ListDividaCliente({route}){
                 visible = {modalAddProdutosVisible}
                 //transparent = {true}
             >
-                <View style={{flex: 1, backgroundColor: '#999',paddingTop: 10}}>
-                <View style={{justifyContent: 'center' , alignItems: 'center'}}>
-                    <Text style={{fontSize: 40, color:'#000'}}>Lista de Produtos</Text>
+                <View style={styles.viewModal}>
+                <View style={styles.viewModalHeader}>
+                    <TouchableOpacity onPress={()=>setModalAddProdutosVisible(false)}>
+                        <AntDesign name="close" size={30} color='#242424'/>
+                    </TouchableOpacity>
+                    <Text style={styles.txtModalHeader}>Adicionar Produto</Text>
+                    <TouchableOpacity onPress={()=>addProdutosClientes()}>
+                        <AntDesign name="check" size={30} color='#242424'/>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.viewList}>
+                <View style={[styles.viewDescricao,{paddingVertical: 20}]}>
+                    <Text style={styles.txt}>Lista de Produtos</Text>
                 </View>
                 <FlatList
                 key = {item => item.key}
                 data= {produtos}
                 renderItem = { ({item}) => (
+                    <>
                     <View style={styles.viewCardListProdutos}>
                             <View style={styles.viewDescProduto}>
-                                <Text style={styles.txtDescProduto}>Nome: {item.nome}</Text>
-                                <Text style={styles.txtDescProduto}>Valor: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
+                                <Text style={styles.txtDescProduto}>{item.nome}</Text>
+                                <Text style={[styles.txtDescProduto,{fontSize: 16}]}>{Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
                             </View>
                             <View style={styles.viewContProduto}>
                                 <TouchableOpacity onPress={()=>incrementarProduto(item)}>
-                                    <Ionicons name= 'md-add-circle' size = {30} color='#000'/>
+                                    <Ionicons name= 'add-circle-outline' size = {30} color='#00CCC0'/>
                                 </TouchableOpacity>
                                 <Text style={{fontSize: 19,marginVertical: 3, color: '#000'}}>{item.cont}</Text>
                                 <TouchableOpacity onPress={()=>decrementarProduto(item)}>
-                                    <AntDesign name= 'minuscircle' size = {25} color='#000'/>
+                                    <AntDesign name= 'minuscircleo' size = {25} color='#00CCC0'/>
                                 </TouchableOpacity>
                             </View>
                     </View>
+                    <View style={[styles.viewDivisao, {width: '80%'}]}>
+
+                    </View>
+                    </>
                 )}
                 />
-                <View style={{flexDirection:'row', justifyContent: 'space-around'}}>
-                            <TouchableOpacity style={styles.btnCancelar} onPress={()=>setModalAddProdutosVisible(false)}>
-                                {<Ionicons name="close-circle" size={60} color='#FF6347'/>}
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnConfirmar} onPress={()=>addProdutosClientes()}>
-                                {<Ionicons name="checkmark-circle" size={60} color='#32CD32'/>}
-                            </TouchableOpacity>
                 </View>
-
                 </View>
+                
             </Modal>
 
+                    
             <Modal
                 transparent = {true}
                 animationType = 'slide'
                 visible = {modalEditVisible}
             >
-                <View style={{flex: 1, justifyContent:'flex-end'}}>
+                <View style={{flex: 1,backgroundColor:'#f4f7ff', justifyContent:'flex-end'}}> 
                 
-                <View style={styles.viewModal}> 
                 <View style={styles.viewTitulo}>
-                    <Text style={styles.txtTitulo}>Alteração do Produto</Text>
+                    <Text style={styles.txtTitulo}>Editar Produto</Text>
                 </View>
+                <View style={styles.viewModal}> 
                     <View style={styles.viewInput}>   
                     <Text style={styles.tipoInput}>Nome: </Text>
                     <TextInput
@@ -327,7 +375,7 @@ export default function ListDividaCliente({route}){
                         <Text style={styles.btnModalEdit}>FECHAR</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>confirmarModalEdit()}>
-                        <Text style={styles.btnModalEdit}>CONFIRMAR</Text>
+                        <Text style={[styles.btnModalEdit,{backgroundColor:'#37DCF2'}]}>CONFIRMAR</Text>
                     </TouchableOpacity>
                     </View>
                 </View>
