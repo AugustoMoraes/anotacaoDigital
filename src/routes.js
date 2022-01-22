@@ -15,17 +15,20 @@ const Stack = createStackNavigator()
 function Tabs() {
   return (
     <Tab.Navigator tabBarOptions={{
-      activeTintColor: '#fff',
+      activeTintColor: '#647aff',
       inactiveTintColor: '#000',
-      activeBackgroundColor: '#999',
+      //activeBackgroundColor: '#999',
       showLabel: false,
+      style:{
+        marginTop: -20,
+        zIndex: -1
+      }
     }}>
-      //Teste git 
-      <Tab.Screen name="Clientes" component={Clientes} options={{ 
+      <Tab.Screen name="Clientes" component={Clientes}  options={{ 
         tabBarIcon: () => (
           <Ionicons name='people' size={50} color='#000' />
         )
-      }} />
+      }}/>
       <Tab.Screen name="Produtos" component={Produtos} options={{
         tabBarIcon: () => (
           <Ionicons name='cart' size={50} color='#000' />
