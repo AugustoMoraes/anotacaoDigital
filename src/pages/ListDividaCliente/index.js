@@ -248,7 +248,7 @@ export default function ListDividaCliente({route}){
                                     )
                                 }
                             <View style={{flexDirection: 'column', marginLeft: 10}}>
-                                <View sty>
+                                <View>
                                
                                 {
                                     (item.divida != null)&&(
@@ -260,6 +260,7 @@ export default function ListDividaCliente({route}){
                                         <Text style={styles.txtPago}>Data: {item.data}</Text>
                                     )
                                 }
+                                
                                 </View>
                             </View>
 

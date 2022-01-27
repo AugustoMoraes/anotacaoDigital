@@ -199,6 +199,7 @@ export default function Clientes(){
                                     //<Text style={[styles.txtDescricao,{backgroundColor: '#37dcf2',color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Dívida Paga</Text>
                                 )
                             }
+                            
                         </View>
                         <View style={styles.viewBotaoCard}>
                                 <TouchableOpacity onPress={()=>addProdutosCliente({item})}> 

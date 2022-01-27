@@ -1,11 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, TouchableOpacity, FlatList,Modal, TextInput, Pressable, Alert,Linking} from 'react-native'
+import {useNavigation} from '@react-navigation/native'
 import {TextInputMask} from 'react-native-masked-text'
 import firebase from '../../database/firebase'
 import styles from './styles'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes'
+
+
 Ionicons.loadFont()
+AntDesign.loadFont()
+
+
 export default function AvCliente({route}){
     const cliente = route.params.item
     const [listAvCliente, setListAvCliente] = useState([])
@@ -18,6 +26,7 @@ export default function AvCliente({route}){
     const [moneyField, setMoneyField] = useState('')
     const [validaData, setValidaData] = useState(false)
     const [debito, setDebito] = useState(0)
+    const navigation = useNavigation()
     useEffect(()=>{
         loadingAvCliente()
         loadingListProdutosCliente()
@@ -42,6 +51,7 @@ export default function AvCliente({route}){
 
         })
     }
+
     async function loadingListProdutosCliente(){
         await firebase.database().ref('produtosVendidos').child(cliente.key).orderByChild('data').on('value',(snapshot) => {
                 setListProdutosCliente([])
@@ -247,28 +257,36 @@ export default function AvCliente({route}){
     return(
         <View style={styles.container}>
             <View style={styles.viewHeader}>
+                <View style={styles.viewClose}>
+                    <TouchableOpacity onPress={()=>navigation.goBack()}>
+                        <AntDesign name="close" size={30} color='#242424'/>
+                    </TouchableOpacity>
+                    <Text style={styles.txtDebito}>Débito</Text>
+                </View>
+                <View style={styles.viewValorDebito}>
+                    <Text style={styles.txtValorDebito}>
+                        {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(debito)}
+                    </Text>
+                    <TouchableOpacity onPress={openModal}>
+                        <Ionicons name='add-circle-sharp' size={45} color='#38E1EE'/>
+                    </TouchableOpacity>
+                </View>
+                {/**
                 <Text style={styles.txtHeader}>Histórico de AV</Text>
                     <TouchableOpacity onPress={openModal}>
                         <Ionicons name="add-circle-sharp" size={40} color='#000'/>
                     </TouchableOpacity>
+                 */}
             </View>
-            <View style={[styles.viewHeader,{justifyContent: 'space-between', marginHorizontal: 10}]}>
-                <Text style={styles.txtHeader}>Cliente: {cliente.nome}</Text>
+            <View style={styles.viewHistorico}>
+                <Text style={styles.txtHistorico}>Histórico de AV</Text>
+            <View style={styles.viewCliente}>
+                <Text style={styles.txtCliente}>{cliente.nome}</Text>
                 <TouchableOpacity onPress={()=>enviarMsg()}>
                     <Ionicons name="logo-whatsapp" size={35} color="#2d5"/>
                 </TouchableOpacity>
             </View>
-            {
-                (cliente.totalCompras === cliente.totalPago)&&(
-                    <View style={styles.viewDeleteDividas}>
-                        <TouchableOpacity style={styles.btnDeleteDividas} onPress={deleteHistoricoAV}>
-                            <Text style={styles.txtDeleteDividas}>
-                                Limpar Histórico de AV
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                )
-            }
+            
             <FlatList
                 key = {item => item.key}
                 data=  {ordernarListaDate(listAvCliente)} 
@@ -285,29 +303,64 @@ export default function AvCliente({route}){
                           ]}
                     >
                         <View style={styles.viewCard}>
-                            <Text style={styles.txtCard}>Data: {item.data}</Text>
-                            <Text style={styles.txtCard}>Valor: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
+                            <Text style={styles.txtDesc}>Valor</Text>
+                            <Text style={styles.txtValueDesc}>{Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(item.valor)}</Text>
+                            <Text style={styles.txtDesc}>Data</Text>
+                            <Text style={styles.txtValueDesc}>{item.data}</Text>
+                        </View>
+                        <View style={styles.viewDividaPaga}>
                             {
                                 (item.divida != null) &&(
-                                    <Text style={[styles.txtCard,{color: '#007111', fontWeight: 'bold'}]}>Dívida: {item.divida}</Text>
+                                    <AntDesign name="checkcircle" size={43} color="#6ECB96" style={{marginVertical: 10}}/>
                                 )
                             }
+                            <View style={{flexDirection: 'column', marginLeft: 10}}>
+                                <View>
+                                    {
+                                        (item.divida != null) &&(
+                                            <Text style={[styles.txtCard,{color: '#007111', fontWeight: 'bold'}]}>{item.divida}</Text>
+                                        )
+                                    }
+                                    {
+                                        (item.divida != null) &&(
+                                            <Text style={[styles.txtCard,{color: '#007111', fontWeight: 'bold'}]}>Data: {item.data}</Text>
+                                        )
+                                    }
+                                </View>
+                            </View>
                         </View>
                     </Pressable>
 
                 )}
                 />
+                {
+                (cliente.totalCompras === cliente.totalPago)&&(
+                    <View style={styles.viewDeleteDividas}>
+                        <TouchableOpacity style={styles.btnDeleteDividas} onPress={deleteHistoricoAV}>
+                            <Text style={styles.txtDeleteDividas}>
+                                Limpar Histórico de AV
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+                }
+                </View>
+                {/** 
                 <View style={styles.viewFooter}>
                         <Text style={styles.txtFooter}>Débito de: {Intl.NumberFormat('pt-br',{style: 'currency', currency: 'BRL'}).format(debito)}
                         </Text>
                 </View>
+                */}
             {/** MODAL DE ATUALIZAÇÃO DAS INFORMAÇÕES */}
             <Modal
                 transparent = {true}
                 animationType = 'slide'
                 visible = {modalAvVisible}
             >
-                <View style={{flex: 1, justifyContent:'flex-end'}}>
+                <View style={{flex:1}}>
+                    {/**,  */}
+                <View style={{height: '65%',backgroundColor: '#303030', opacity: 0.60, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                </View>
                 <View style={styles.viewModal}>
                     <View style={styles.viewTitulo}>
                         <Text style={styles.txtTitulo}>Adicionar AV</Text>
@@ -319,20 +372,21 @@ export default function AvCliente({route}){
                             style={styles.input}
                             value={valor}
                             placeholder = 'R$00,00'
-                            placeholderTextColor = '#FFF'
+                            placeholderTextColor = '#909090'
                             onChangeText={(value) => setValor(value)}
                             ref={(ref) => setMoneyField(ref)}
                         />
                     </View>
                     <View style={styles.viewBtn}>
                     <TouchableOpacity onPress={()=>fecharModal()}>
-                        <Text style={styles.btn}>FECHAR</Text>
+                        <Text style={[styles.btn,{backgroundColor: '#AEAEAE'}]}>FECHAR</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>confirmar()}>
                         <Text style={styles.btn}>CONFIRMAR</Text>
                     </TouchableOpacity>
                     </View>
                 </View>
+                
                 </View>
             </Modal>
             

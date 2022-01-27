@@ -3,44 +3,89 @@ import {StyleSheet} from 'react-native'
 export default StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#999'
+        backgroundColor: '#f4f7ff'
     },  
     viewHeader:{
-        flexDirection: 'row', 
-        justifyContent: 'space-around',
-        alignItems: 'center'
+        marginVertical: 25,
+        marginHorizontal: 10
     },
     txtHeader:{
        fontSize: 25,
        color: '#000'
     },
-    viewDeleteDividas:{
-        marginVertical: 7,
-        justifyContent: 'center',
+    viewClose:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '60%',
+    },
+    txtDebito:{
+        fontSize: 27,
+        color: '#242424'
+    },
+    viewValorDebito:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 10,
         alignItems: 'center'
-        
+    },
+    txtValorDebito:{
+        fontSize: 32,
+        color: '#00CCC0' && '#13B1FB',
+        marginTop: 5,
+        alignItems: 'center' 
+    },
+    viewCliente:{
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    txtCliente:{
+        fontSize: 22,
+        color: '#909090'
+    },
+    viewHistorico:{
+        flex: 1,
+        backgroundColor: '#fff',
+        borderTopRightRadius: 30,
+        borderTopLeftRadius: 30,
+        padding: 18
+    },
+    txtHistorico:{
+        fontSize: 25,
+        color: '#242424'
+    },
+    viewDeleteDividas:{
+        backgroundColor: '#39DCF2' && '#38F2E8',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        opacity: 0.97
     },
     btnDeleteDividas:{
-        backgroundColor: '#fff',
         padding: 5,
-        borderRadius: 5
     },
     txtDeleteDividas:{
-        color: '#000',
+        color: '#fff',
         fontSize: 20,
         fontWeight: 'bold'
     },
     viewCard:{
         backgroundColor: '#fff',
-        marginVertical: 5,
-        marginHorizontal: 7,
-        padding: 5,
+        elevation: 3,
+        shadowOpacity: 7,
+        //marginVertical: 5,
+        //marginHorizontal: 7,
+        padding: 7,
         borderRadius: 7
     },
-    txtCard:{
-        fontSize: 20,
+    txtDesc:{
+        fontSize: 25,
+        color: '#242424'
+    },
+    txtValueDesc:{
+        fontSize: 17,
         marginBottom: 5,
-        color: '#000'
+        color: '#909090'
     },
     viewFooter:{
         marginHorizontal: 5,
@@ -55,16 +100,14 @@ export default StyleSheet.create({
     viewTitulo:{
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 15
+        marginVertical: 15,
     },
     txtTitulo:{
-        color: '#FFF',
-        fontSize: 30,
+        color: '#242424',
+        fontSize: 27,
     },
     viewModal:{
-        backgroundColor: '#292929',
-        borderTopRightRadius: 7,
-        borderTopLeftRadius: 7
+        backgroundColor: '#fff',
     },
     viewInput:{
         flexDirection: 'row',
@@ -73,10 +116,10 @@ export default StyleSheet.create({
         marginHorizontal: 5,
     },
     input:{
-        color: '#fff',
+        color: '#909090',
         paddingHorizontal: 15,
         borderWidth: 1,
-        borderColor: '#fff',
+        borderColor: '#242424',
         marginBottom: 7,
         borderRadius: 7,
         paddingVertical: 0,
@@ -84,18 +127,21 @@ export default StyleSheet.create({
     },
     txtTipoInput:{
         fontSize: 25,
-        color: '#fff',
+        color: '#242424',
         marginHorizontal: 15
     },
     viewBtn:{
         flexDirection: 'row', 
         justifyContent: 'space-around', 
         alignItems:'center',
-        marginVertical: 7
+        marginTop: 35
     },
     btn:{
+        backgroundColor: '#37DCF2',
+        padding: 10,
         color: '#fff',
-        fontSize: 23
+        fontSize: 19,
+        borderRadius: 7
     },
     //Teste Pressable
     wrapperCustom: {
@@ -104,5 +150,17 @@ export default StyleSheet.create({
         //padding: 5,
         borderRadius: 7
     },
-    
+    viewDividaPaga:{
+        flexDirection: 'row',
+        backgroundColor: '#E1F5EA',
+        //justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        borderRadius: 7,
+        marginTop: 7,
+        alignItems: 'center'
+    },
+    txtPago:{
+        fontSize: 15,
+        color: '#40C379'
+    },
 })
