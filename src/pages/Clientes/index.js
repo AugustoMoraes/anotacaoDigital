@@ -5,8 +5,14 @@ import styles from './styles'
 import firebase from '../../database/firebase'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import ButtonAdd from '../../components/ButtonAddTab'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import Entypo from 'react-native-vector-icons/Entypo'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+
 Ionicons.loadFont()
+MaterialCommunityIcons.loadFont()
+Entypo.loadFont()
+AntDesign.loadFont()
 
 export default function Clientes(){
     const navigation = useNavigation()
@@ -213,11 +219,25 @@ export default function Clientes(){
                     </Pressable>
                 )}
             />
-            <View style={styles.btnAdd}>
-                <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
-                    <ButtonAdd/>
-                </TouchableOpacity>
+            <View style={styles.viewTab}>
+                <View style={[styles.viewBtn,{borderTopRightRadius: 60}]}>
+                    <TouchableOpacity onPress={()=>{}}>
+                        <MaterialCommunityIcons name='clipboard-text' size={35} color='#3AE2F0'/> 
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.viewBtnAdd}>
+                    <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
+                        {/*<ButtonAdd/> */}
+                        <Entypo name='plus' size={50} color='#fff'/> 
+                    </TouchableOpacity>
+                </View>
+                <View style={[styles.viewBtn,{borderTopLeftRadius: 60}]}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('Produtos')}>
+                        <AntDesign name='shoppingcart' size={35} color='#242424' /> 
+                    </TouchableOpacity>
+                </View>
             </View>
+            
             <Modal
                 animationType ='slide'
                 visible = {modalAddVisible}

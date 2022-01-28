@@ -93,9 +93,29 @@ export default StyleSheet.create({
         borderRadius: 7,
         color: '#FFF',
     },
-    btnAdd:{
+    viewTab:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: '10%',
+     },
+     viewBtn:{
+        width: '40%',
+        height: '100%',
+        backgroundColor: '#fff',
         justifyContent: 'center',
         alignItems: 'center',
-        //position: 'absolute'
-    }, 
+        //borderBottomLeftRadius: -60
+    },
+    viewBtnAdd:{
+       width: 60,
+       height: 60,
+       borderRadius: 30,
+       backgroundColor: '#3eccf5',
+       justifyContent: 'center',
+       alignItems: 'center',
+       position: 'relative',
+       marginTop: -30,
+       //borderBottomLeftRadius: 50,
+    },
 })

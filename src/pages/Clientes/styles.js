@@ -145,11 +145,31 @@ export default StyleSheet.create({
         borderColor: '#f0f0f0',
         backgroundColor: '#f9f9f9'
       },
-     btnAdd:{
-         justifyContent: 'center',
-         alignItems: 'center',
-         //position: 'absolute'
-     }, 
+     viewTab:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: '10%',
+     },
+     viewBtn:{
+        width: '40%',
+        height: '100%',
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        //borderBottomLeftRadius: -60
+    },
+    viewBtnAdd:{
+       width: 60,
+       height: 60,
+       borderRadius: 30,
+       backgroundColor: '#3eccf5',
+       justifyContent: 'center',
+       alignItems: 'center',
+       position: 'relative',
+       marginTop: -30,
+       //borderBottomLeftRadius: 50,
+    },
      viewDivida:{
         backgroundColor: "#6ECB96",
         //opacity: 0.85,

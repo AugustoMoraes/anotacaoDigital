@@ -3,12 +3,18 @@ import firebase from '../../database/firebase'
 import styles from './styles'
 import {View, Text, FlatList, TouchableOpacity, Modal,TextInput,Alert} from 'react-native'
 import {TextInputMask} from 'react-native-masked-text'
+import {useNavigation} from '@react-navigation/native'
+
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Entypo from 'react-native-vector-icons/Entypo'
-import ButtonAdd from '../../components/ButtonAddTab'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 Ionicons.loadFont()
+MaterialCommunityIcons.loadFont()
 Entypo.loadFont()
+AntDesign.loadFont()
+
 export default function Produtos(){
     const [produtos,setProdutos] = useState([])
     const [modalAddVisible, setModalAddVisible] = useState(false)
@@ -17,7 +23,8 @@ export default function Produtos(){
     const [moneyField, setMoneyField] = useState('')
     const [nome, setNome] = useState('')
     const [valor, setValor] = useState('')
-    
+    const navigation = useNavigation()
+
     useEffect(()=>{
         async function loadingProdutos(){
             await firebase.database().ref('produtos').orderByChild('nome').on('value' , (snapshot)=>{
@@ -182,10 +189,23 @@ export default function Produtos(){
                     </View>
                 )}
             />
-            <View style={styles.btnAdd}>
-                <TouchableOpacity onPress={()=>addProduto()}>
-                    <ButtonAdd/>
-                </TouchableOpacity>
+            <View style={styles.viewTab}>
+                <View style={[styles.viewBtn,{borderTopRightRadius: 60}]}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('Clientes')}>
+                        <MaterialCommunityIcons name='clipboard-text' size={35} color='#242424'/> 
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.viewBtnAdd}>
+                    <TouchableOpacity onPress={()=>setModalAddVisible(true)}>
+                        {/*<ButtonAdd/> */}
+                        <Entypo name='plus' size={50} color='#fff'/> 
+                    </TouchableOpacity>
+                </View>
+                <View style={[styles.viewBtn,{borderTopLeftRadius: 60}]}>
+                    <TouchableOpacity onPress={()=>{}}>
+                        <AntDesign name='shoppingcart' size={35} color='#3AE2F0' /> 
+                    </TouchableOpacity>
+                </View>
             </View>
         <Modal
             animationType="slide"
