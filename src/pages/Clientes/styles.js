@@ -33,7 +33,7 @@ export default StyleSheet.create({
         marginTop: 7,
         paddingVertical: 30,
         width: '50%', 
-        backgroundColor: '#39def1',
+        backgroundColor: '#647AFF' && '#39DEF1',
         borderRadius: 15,
         marginHorizontal: 17
         
@@ -151,7 +151,8 @@ export default StyleSheet.create({
          //position: 'absolute'
      }, 
      viewDivida:{
-        backgroundColor: "#37dcf2",
+        backgroundColor: "#6ECB96",
+        //opacity: 0.85,
         width: '65%',
         alignItems: 'center',
         justifyContent: 'center',

@@ -193,7 +193,7 @@ export default function Clientes(){
                             {
                                 
                                 (item.totalCompras != item.totalPago) &&(
-                                    <View style={[styles.viewDivida,{backgroundColor: '#647AFF'}]}>
+                                    <View style={[styles.viewDivida,{backgroundColor: '#FF7070'}]}>
                                         <Text style={styles.txtDivida}> Pendente </Text>
                                     </View>
                                     //<Text style={[styles.txtDescricao,{backgroundColor: '#37dcf2',color: '#007111', fontWeight: 'bold', fontSize: 20}]}>Dívida Paga</Text>

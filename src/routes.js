@@ -8,30 +8,35 @@ import Produtos from './pages/Produtos'
 import ListDividaCliente from './pages/ListDividaCliente'
 import AvCliente from './pages/AvCliente'
 
-import Ionicons from 'react-native-vector-icons/Ionicons'
-Ionicons.loadFont()
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+AntDesign.loadFont()
+MaterialCommunityIcons.loadFont()
+
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 function Tabs() {
   return (
     <Tab.Navigator tabBarOptions={{
-      activeTintColor: '#647aff',
+      activeTintColor: '#3AE2F0',
       inactiveTintColor: '#000',
       //activeBackgroundColor: '#999',
       showLabel: false,
       style:{
+        borderTopColor: 'transparent',
         marginTop: -20,
         zIndex: -1
       }
     }}>
       <Tab.Screen name="Clientes" component={Clientes}  options={{ 
-        tabBarIcon: () => (
-          <Ionicons name='people' size={50} color='#000' />
+        tabBarIcon: ({color}) => (
+          <MaterialCommunityIcons name='clipboard-text' size={35} color={color} />
         )
       }}/>
       <Tab.Screen name="Produtos" component={Produtos} options={{
-        tabBarIcon: () => (
-          <Ionicons name='cart' size={50} color='#000' />
+        tabBarIcon: ({color}) => (
+          <AntDesign name='shoppingcart' size={35} color={color} />
         )
       }} />
     </Tab.Navigator>

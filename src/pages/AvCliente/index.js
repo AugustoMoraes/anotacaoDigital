@@ -30,7 +30,7 @@ export default function AvCliente({route}){
     useEffect(()=>{
         loadingAvCliente()
         loadingListProdutosCliente()
-        console.log(listProdutosCliente)
+        //console.log(listProdutosCliente)
         setDebito(cliente.totalCompras - cliente.totalPago)
         //ordernarListaDate()
         
@@ -379,10 +379,10 @@ export default function AvCliente({route}){
                     </View>
                     <View style={styles.viewBtn}>
                     <TouchableOpacity onPress={()=>fecharModal()}>
-                        <Text style={[styles.btn,{backgroundColor: '#AEAEAE'}]}>FECHAR</Text>
+                        <Text style={[styles.btn,{backgroundColor: '#AEAEAE'}]}>Cancelar</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>confirmar()}>
-                        <Text style={styles.btn}>CONFIRMAR</Text>
+                        <Text style={styles.btn}>Confirmar</Text>
                     </TouchableOpacity>
                     </View>
                 </View>
@@ -396,10 +396,12 @@ export default function AvCliente({route}){
                 visible = {modalEditVisible}
                 
             >
-                <View style={{flex: 1, justifyContent:'flex-end'}}>
+                <View style={{flex: 1}}>
+                <View style={{height: '65%',backgroundColor: '#303030', opacity: 0.60, borderBottomLeftRadius: 15, borderBottomRightRadius: 15}}>
+                </View>
                 <View style={styles.viewModal}>
                     <View style={styles.viewTitulo}>
-                        <Text style={styles.txtTitulo}>Editar AV do Cliente</Text>
+                        <Text style={styles.txtTitulo}>Editar AV</Text>
                     </View>  
                     <View style={styles.viewInput}>
                     <Text style={styles.txtTipoInput}>Data:</Text>
@@ -410,7 +412,7 @@ export default function AvCliente({route}){
                         }}
                         value={data}
                         placeholder = {edit.data}
-                        placeholderTextColor = '#FFF'
+                        placeholderTextColor = '#909090'
                         onChangeText={(value) => setData(value)}
                         ref={ (ref) => setValidaData(ref)}
                         style={styles.input}
@@ -418,13 +420,15 @@ export default function AvCliente({route}){
                     </View>
                     <View style={styles.viewBtn}>
                     <TouchableOpacity onPress={()=>setModalEtidVisible(false)}>
-                        <Text style={styles.btn}>FECHAR</Text>
+                        <Text style={[styles.btn,{backgroundColor: '#AEAEAE'}]}>Cancelar</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>confirmarModalEdit()}>
-                        <Text style={styles.btn}>CONFIRMAR</Text>
+                        <Text style={styles.btn}>Confirmar</Text>
                     </TouchableOpacity>
                     </View>
                 </View>
+
+                
                 </View>
             </Modal>
             

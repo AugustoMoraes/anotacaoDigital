@@ -48,7 +48,7 @@ export default function Produtos(){
         zerarForm()
     }
     async function confirmar(){
-        console.log(`valor: ${valor}`)
+        //console.log(`valor: ${valor}`)
         if(nome == '' || valor == ''){
           alert('preencha os campos em branco')
           return
@@ -70,8 +70,8 @@ export default function Produtos(){
     }
     async function confirmarEdit(){
       //alert('inicio')
-      console.log(`Edit.valor: ${edit.valor}`)
-      console.log(`valor: ${valor}`)
+      //console.log(`Edit.valor: ${edit.valor}`)
+      //console.log(`valor: ${valor}`)
       if(edit.nome == nome && edit.valor == valor){
         alert('Produto Editado com Sucesso!')
         zerarForm()
@@ -91,7 +91,7 @@ export default function Produtos(){
       }else{
         numberValue = returnNumber(valor)
       }
-      console.log(`numberValue: ${numberValue}`)
+      //console.log(`numberValue: ${numberValue}`)
       await firebase.database().ref('produtos').child(edit.key).set({
           nome: nome,
           valor: numberValue == 0.0 ? edit.valor : numberValue,
